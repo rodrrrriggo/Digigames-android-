@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button default-href="'/vistarol'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Bienvenido</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <div id="container">
+    <img src="assets/img/logo1.png" alt="Logo DIGIGAMES" style="height: 120px; vertical-align: middle;">
+    <ion-card color="warning">
+      <br />
+      <ion-title>Inicia Sesion en DIGIGAMES</ion-title>
+      <br />
+      <ion-input type="email" label="Correo Electronico" label-placement="floating" fill="outline" placeholder="email@tudominio"
+      [(ngModel)]="correo"></ion-input>
+      <br />
+      <ion-input type="password" label="Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
+      [counter]="true"
+      maxlength="8" [(ngModel)]="contrasena"></ion-input>
+      <ion-button (click)="ingresoUsuarios()">ENTRAR</ion-button>
+      <br />
+      <ion-label>
+        <p>Olvide mi contraseña. <a [routerLink]="['/modifcontra']" >Recuperar contraseña</a></p>
+      </ion-label> 
+      <br />
+      <ion-label>
+        <p>¿Nuevo en DIGIGAMES?, unete ya mismo!. <a [routerLink]="['/registro']" >Registrate</a></p>
+      </ion-label> 
+      <br />
+    </ion-card>
+    </div>
+
+
+</ion-content>
+
+<ion-footer translucent="true">
+  <ion-tab-bar color="warning" slot="bottom">
+    <ion-title>
+      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 50px;">
+      </ion-title>
+  </ion-tab-bar>
+</ion-footer>
+
+

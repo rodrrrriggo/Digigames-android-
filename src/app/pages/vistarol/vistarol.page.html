@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <p>Bienvenido a la seleccion de vistas! </p>
+  <p>Version 1.2.0</p>
+
+    <div id="container1">
+        <img src="assets/img/logo1.png" alt="Logo DIGIGAMES" style="height: 120px;">
+    </div>
+  <div id="container">
+    
+    <ion-button [routerLink]="'/vistaadmin'" color="danger">Vista Admin.</ion-button>
+    <ion-button [routerLink]="'/login'" color="warning">Vista Usuario</ion-button>
+    
+
+  </div>
+  
+</ion-content>
+
+
+<ion-footer translucent="true">
+  <ion-tab-bar color="warning" slot="bottom">
+    <ion-title>
+      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 50px;">
+      </ion-title>
+  </ion-tab-bar>
+</ion-footer>

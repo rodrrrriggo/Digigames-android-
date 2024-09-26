@@ -1,0 +1,33 @@
+<ion-app>
+
+  <ion-menu side="start" menuId="first" contentId="main-content">
+    <ion-header>
+      <ion-toolbar color="warning">
+        <ion-title>Digi Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle>
+          <ion-item color="warning" detail="true" [routerLink]="['/preguntas']" >
+            <mat-icon>help</mat-icon>
+            <ion-label>Preguntas Frecuentes</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item color="warning" detail="true" [routerLink]="['/home']" (click)="presentAlert()">
+            <mat-icon>logout</mat-icon>
+            <ion-label>Salir</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+    </ion-content>
+
+  </ion-menu>
+
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+
+</ion-app>

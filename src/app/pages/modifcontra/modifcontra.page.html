@@ -1,0 +1,38 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button default-href="'#'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Modificar tu contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <div id="container">
+    <img src="assets/img/logo1.png" alt="Logo DIGIGAMES" style="height: 120px; vertical-align: middle;">
+    <ion-card color="warning">
+      <br />
+      <ion-title>Modifica tu contraseña</ion-title>
+      <br />
+      <p>Te enviaremos un correo para restablecerla</p>
+      <br />
+      <ion-input type="email" label="Correo Electronico" label-placement="floating" fill="outline" placeholder="email@tudominio" 
+      [(ngModel)]="correo"></ion-input>
+      <br />
+      <ion-button (click)="modifcontrasena()">Aceptar</ion-button>
+      <br />
+    </ion-card>
+    </div>
+
+
+</ion-content>
+
+<ion-footer translucent="true">
+  <ion-tab-bar color="warning" slot="bottom">
+    <ion-title>
+      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 50px;">
+      </ion-title>
+  </ion-tab-bar>
+</ion-footer>

@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning">
+          <ion-buttons slot="start">
+            <ion-back-button default-href="'/catalogo'"></ion-back-button>
+          </ion-buttons>
+    <ion-title>
+      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 55px; margin-right: 50px;">
+      </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <div id="container">
+    <ion-icon name="person"></ion-icon>
+    <ion-card color="warning">
+      <br />
+      <ion-title>Bienvenido/a: </ion-title>
+      <br />
+      <p>Modifica tu perfil aqui abajo</p>
+      <br />
+      <ion-input label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Elige un nombre bonito" [(ngModel)]="nombre"></ion-input>
+      <br />
+      <ion-input type="email" label="Correo Electronico" label-placement="floating" fill="outline" placeholder="email@tudominio"
+      ngModel
+      email [(ngModel)]="correo"></ion-input>
+      <br />
+      <p>Confirma tus cambios</p>
+      <ion-input type="password" label="Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
+      [counter]="true"
+      maxlength="8" [(ngModel)]="contrasena"></ion-input>
+      <br />
+      <ion-input type="password" label="Confirmar Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
+      [counter]="true"
+      maxlength="8" [(ngModel)]="confirmarContrasena"></ion-input>
+      <br />
+      <ion-button (click)="ingresoUsuarios()">MODIFICAR</ion-button>
+      <br />
+    </ion-card>
+    </div>
+</ion-content>
+
+<ion-footer translucent="true">
+  <ion-tab-bar color="warning" slot="bottom">
+    
+  </ion-tab-bar>
+</ion-footer>
