@@ -42,7 +42,7 @@ export class RegistroPage implements OnInit {
 
     const nombreValido = /^[a-zA-Z ]+$/.test(this.nombre);
     if (!nombreValido) {
-      await this.presentToast('middle', 'El nombre no puede contener números.');
+      await this.presentToast('middle', 'Tu nombre no puede contener caracteres especiales.');
       return;
     }
 

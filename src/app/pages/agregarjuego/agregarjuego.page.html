@@ -9,10 +9,30 @@
 
 
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true"> 
   <h1>Aqui puedes agregar juegos</h1>
   <div id="container">
     <ion-icon name="add"></ion-icon>
+
+    <ion-card color="warning"> 
+      <br />
+      <ion-title>
+        Ingresa un nuevo juego al catalogo
+        <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 30px; vertical-align: middle;">
+      </ion-title>
+      <br />
+      <ion-input label="Nombre del juego" label-placement="floating" fill="outline" placeholder="Escoge el nombre del juego" [(ngModel)]="nombre" ></ion-input>
+      <br />
+      <ion-input type="number" label="Precio" label-placement="floating" fill="outline" placeholder="Precio del juego" [(ngModel)]="precio" ></ion-input>
+      <br />
+      <ion-item color="warning">
+        <input type="file" (change)="onFileSelected($event)" />
+      </ion-item>
+      <br />
+      <ion-button (click)="registrojuego()">REGISTRAR</ion-button>
+      <br />
+    </ion-card>
+
   </div>
 </ion-content>
 
