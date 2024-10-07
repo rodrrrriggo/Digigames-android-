@@ -12,16 +12,16 @@
 <ion-content [fullscreen]="true">
   <ion-content padding class="background">
   
-  <ion-row>
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="#" src="assets/img/black myth.jpg" />
+  <!-- <ion-row> -->
+  <ion-card *ngFor="let x of arregloJuegos"> 
+    <ion-img class="card-imagen" alt="#" src="{{x.foto_producto}}" />
     <ion-card-header>
-      <ion-card-title>Black Myth: Wukong</ion-card-title>
-      <ion-card-subtitle>39.999</ion-card-subtitle>
+      <ion-card-title>{{x.nombre_producto}}</ion-card-title>
+      <ion-card-subtitle>{{x.precio}}</ion-card-subtitle>
       
     </ion-card-header>
-    <ion-button color="success" (click)="presentAnotherAlert()" >Editar</ion-button>
-    <ion-button color="danger" (click)="presentAnotherAlert()" >Eliminar</ion-button>
+    <ion-button color="success" (click)="editar(x)">Editar</ion-button>
+    <ion-button color="danger" (click)="eliminar(x)" >Eliminar</ion-button>
       <div class="icon-container">
         <ion-card-title>Disponible en:</ion-card-title>
         <ion-icon name="logo-steam"></ion-icon>
@@ -29,7 +29,7 @@
       </div>
   </ion-card>
 
-  <ion-card class="card1">
+  <!-- <ion-card class="card1">
     <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/elden.jpg" />
     <ion-card-header>
       <ion-card-title>Elden Ring</ion-card-title>
@@ -192,9 +192,9 @@
     </div>
 
     
-  </ion-card>
+  </ion-card>-->
 
-</ion-row>
+<!--</ion-row>-->
 
 </ion-content>
 </ion-content>

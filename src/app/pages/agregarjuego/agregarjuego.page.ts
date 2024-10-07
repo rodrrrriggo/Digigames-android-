@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { ServiceBDService } from 'src/app/services/service-bd.service';
 
 @Component({
   selector: 'app-agregarjuego',
@@ -9,26 +10,16 @@ import { AlertController, ToastController } from '@ionic/angular';
 })
 export class AgregarjuegoPage implements OnInit {
 
-  nombre: string = "";
-  precio: string = "";
+  nombre!: string 
+  precio!: number;
+  foto_producto!: string;
   selectedFile: File | null = null; // Archivo de imagen seleccionado
   previewUrl: any = null; // URL para la vista previa de la imagen
 
-  constructor(public alertController: AlertController, private toastController: ToastController, private router: Router) {}
+  constructor(public alertController: AlertController, private toastController: ToastController, private router: Router, private bd: ServiceBDService, private activedroute: ActivatedRoute) {}
 
   ngOnInit() {
   }
-
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'DIGIGAMES DICE:',
-      message: 'Juego agregado exitosamente!',
-      buttons: ['Continuar'],
-    });
-
-    await alert.present();
-  }
-
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
@@ -44,29 +35,8 @@ export class AgregarjuegoPage implements OnInit {
     }
   }
 
-  async registrojuego () {
-    if (this.nombre === "" || this.precio === "") {
-      await this.presentToast('middle', 'Si quieres agregar un juego, debes completar todos los campos.');
-      return;
-    }
-
-    const nombreValido = /^[a-zA-Z-0-9 ]+$/.test(this.nombre);
-    if (!nombreValido) {
-      await this.presentToast('middle', 'El nombre no cumple el formato');
-      return;
-    }
-
-    await this.presentAlert();
-    this.router.navigate(['/vistaadmin']);
-  }
-
-    async presentToast(position: 'middle', texto: string) {
-      const toast = await this.toastController.create({
-        position: position,
-        message: texto,
-        duration: 2000,
-      });
-  
-      await toast.present();
-    }
-  }
+  crear (){
+    this.bd.insertarJuego(this.nombre, this.precio, this.foto_producto);
+    this.router.navigate(['/vistaadmin'],)
+  }  
+}

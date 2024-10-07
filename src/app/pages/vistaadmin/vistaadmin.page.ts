@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ServiceBDService } from 'src/app/services/service-bd.service';
 
 @Component({
   selector: 'app-vistaadmin',
@@ -8,10 +10,26 @@ import { AlertController } from '@ionic/angular';
 })
 export class VistaadminPage implements OnInit {
   
-  constructor(private alertController: AlertController) {}
+arregloJuegos = [{
+  nombre_producto:'',
+  precio:0,
+  foto_producto:''
+}]
 
-  ngOnInit() {}
+  constructor(private alertController: AlertController, private bd: ServiceBDService, private router: Router) {}
 
+  ngOnInit() {
+
+    this.bd.dbState().subscribe(res=>{
+      if(res){
+        this.bd.fetchJuegos().subscribe(data=>{
+          this.arregloJuegos = data;
+        })
+      }
+    })
+  }
+
+  
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -23,16 +41,21 @@ export class VistaadminPage implements OnInit {
     await alert.present();
   }
 
-  async presentAnotherAlert() {
-    const alert = await this.alertController.create({
-      header: 'DIGIGAMES DICE:',
-      message: 'Juego Editado/Eliminado',
-      buttons: ['Continuar'],
-    });
+  editar(x:any){
+    let navigationExtras: NavigationExtras = {
+      state: {
+        Productos: x
+      }
+    }
+    this.router.navigate(['/editarjuego'], navigationExtras);
+  }
 
-    await alert.present();
+  eliminar(x:any){
+    this.bd.eliminarProducto(x.id_producto);
   }
 }
+
+
 
 
 
