@@ -12,8 +12,6 @@
 <ion-content [fullscreen]="true"> 
   <h1>Hora de modificar!</h1>
   <div id="container">
-    <ion-icon name="build-outline"></ion-icon>
-
     <ion-card color="warning"> 
       <br />
       <ion-title>
@@ -21,13 +19,14 @@
         <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 30px; vertical-align: middle;">
       </ion-title>
       <br />
+      <!-- Input para seleccionar la imagen -->
+      <ion-button (click)="takePicture()">Elegir Imagen</ion-button><br>
+      <img *ngIf="foto_producto" [src]="foto_producto" alt="Sin imagen" style="height: 250px;width: 250px;" [(ngModel)]="foto_producto"/>
+      
+      <br />
       <ion-input label="Nombre del juego" label-placement="floating" fill="outline" placeholder="Escoge el nombre del juego" [(ngModel)]="JuegoMod.nombre_producto" ></ion-input>
       <br />
       <ion-input type="number" label="Precio" label-placement="floating" fill="outline" placeholder="Precio del juego" [(ngModel)]="JuegoMod.precio" ></ion-input>
-      <br />
-      <ion-item color="warning">
-        <input type="file"/>
-      </ion-item>
       <br />
       <ion-button (click)="editar()">MODIFICAR</ion-button>
       <br />

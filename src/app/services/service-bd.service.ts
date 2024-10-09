@@ -19,12 +19,12 @@ export class ServiceBDService {
 
   tablaEstado: string = "CREATE TABLE IF NOT EXISTS estado(id_estado INTEGER PRIMARY KEY NOT NULL, nombre_estado VARCHAR(50))";
 
-  tablaProductos: string = "CREATE TABLE IF NOT EXISTS productos(id_producto INTEGER PRIMARY KEY AUTOINCREMENT, foto_producto text, nombre_producto VARCHAR(50),precio INTEGER)";
+  tablaProductos: string = "CREATE TABLE IF NOT EXISTS productos(id_producto INTEGER PRIMARY KEY AUTOINCREMENT, foto_producto Blob, nombre_producto VARCHAR(50),precio INTEGER)";
 
 
   //TABLAS CON FOREIGN KEY
 
-  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50), correo VARCHAR(50), telefono VARCHAR(50), contrasena VARCHAR(50), rol_id_rol INTEGER, FOREIGN KEY(rol_id_rol) REFERENCES rol(id_rol))";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL , correo VARCHAR(50) NOT NULL UNIQUE, telefono VARCHAR(50) NOT NULL, contrasena VARCHAR(50) NOT NULL, rol_id_rol INTEGER, FOREIGN KEY(rol_id_rol) REFERENCES rol(id_rol))";
 
   tablaVenta: string = "CREATE TABLE IF NOT EXISTS venta(id_venta INTEGER PRIMARY KEY AUTOINCREMENT, cantidad_venta INTEGER, total_venta INTEGER, usuarios_id_usuarios INTEGER, FOREIGN KEY(usuarios_id_usuarios) REFERENCES usuarios(id_usuario)), estado_id_estado INTEGER, FOREIGN KEY(estado_id_estado) REFERENCES estado(id_estado))";
 
@@ -143,7 +143,7 @@ export class ServiceBDService {
     })
   }
 
-  editarProducto(id_producto: string, nombre_producto: string,precio: number, foto_producto: string ){
+  editarProducto(id_producto: string, nombre_producto: string,precio: number, foto_producto: Blob ){
     return this.database.executeSql('UPDATE Productos SET nombre_producto = ?, precio = ?, foto_producto = ? WHERE id_producto = ?',[nombre_producto,precio,foto_producto,id_producto]).then((res)=>{
       this.presentAlert("Modificar", "Juego modificado de manera correcta");
       this.getJuego();
