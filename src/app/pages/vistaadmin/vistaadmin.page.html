@@ -26,6 +26,7 @@
         <ion-card-title>Disponible en:</ion-card-title>
         <ion-icon name="logo-steam"></ion-icon>
         <ion-icon name="logo-playstation"></ion-icon>
+        <ion-icon name="logo-xbox"></ion-icon>
       </div>
   </ion-card>
 
@@ -203,13 +204,13 @@
 <ion-footer [translucent]="true">
     
     <ion-tab-bar color="warning" slot="bottom">
-      <ion-tab-button tab="home" [routerLink]="['/perfil']" >
+      <ion-tab-button tab="home" [routerLink]="['/perfiladmin']" >
         <mat-icon>admin_panel_settings</mat-icon>
         Tu Perfil administrativo
       </ion-tab-button>
-      <ion-tab-button tab="library" [routerLink]="['/carrito']">
-        <mat-icon>shopping_cart</mat-icon>
-        Carrito
+      <ion-tab-button tab="library" [routerLink]="['/estadisticasadmin']">
+        <ion-icon name="analytics-outline"></ion-icon>
+        Estadisticas y revisiones
       </ion-tab-button>
       <ion-tab-button tab="library" [routerLink]="['/agregarjuego']">
       <ion-icon name="duplicate-outline"></ion-icon>

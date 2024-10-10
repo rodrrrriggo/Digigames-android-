@@ -60,9 +60,20 @@ const routes: Routes = [
     loadChildren: () => import('./pages/editarjuego/editarjuego.module').then( m => m.EditarjuegoPageModule)
   },
   {
+    path: 'perfiladmin',
+    loadChildren: () => import('./pages/perfiladmin/perfiladmin.module').then( m => m.PerfiladminPageModule)
+  },
+  {
+    path: 'estadisticasadmin',
+    loadChildren: () => import('./pages/estadisticasadmin/estadisticasadmin.module').then( m => m.EstadisticasadminPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/notfound/notfound.module').then( m => m.NotfoundPageModule)
   },
+  
+
+  
   
 
 

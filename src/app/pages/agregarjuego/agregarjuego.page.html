@@ -21,13 +21,12 @@
         <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 30px; vertical-align: middle;">
       </ion-title>
       <br />
+      <ion-button (click)="takePicture()">Elegir Imagen</ion-button><br>
+      <img *ngIf="foto_producto" [src]="foto_producto" alt="Sin imagen" style="height: 250px; width: 250px;" [(ngModel)]="foto_producto"/>
+      <br />
       <ion-input label="Nombre del juego" label-placement="floating" fill="outline" placeholder="Escoge el nombre del juego" [(ngModel)]="nombre" ></ion-input>
       <br />
       <ion-input type="number" label="Precio" label-placement="floating" fill="outline" placeholder="Precio del juego" [(ngModel)]="precio" ></ion-input>
-      <br />
-      <ion-item color="warning">
-        <input type="file" (change)="onFileSelected($event)" />
-      </ion-item>
       <br />
       <ion-button (click)="crear()">REGISTRAR</ion-button>
       <br />

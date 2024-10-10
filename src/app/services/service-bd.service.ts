@@ -125,8 +125,8 @@ export class ServiceBDService {
       this.listaJuegos.next(items as any);
     })
   }
-  insertarJuego(nombre_producto: string, precio: number, foto_producto: string){
-    return this.database.executeSql('INSERT INTO productos(foto_producto, nombre_producto, precio) VALUES (?,?,?)',[foto_producto, nombre_producto,precio]).then((res)=>{
+  insertarJuego(nombre_producto: string, precio: number, foto_producto: Blob){
+    return this.database.executeSql('INSERT INTO Productos(foto_producto, nombre_producto, precio) VALUES (?,?,?)',[foto_producto,nombre_producto,precio,]).then((res)=>{
       this.presentAlert("Agregar", "Juego agregado exitosamente!");
       this.getJuego();
     }).catch(e=>{

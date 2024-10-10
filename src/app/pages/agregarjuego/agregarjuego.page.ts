@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { ServiceBDService } from 'src/app/services/service-bd.service';
+import { Camera, CameraResultType } from '@capacitor/camera';
 
 @Component({
   selector: 'app-agregarjuego',
@@ -12,31 +13,32 @@ export class AgregarjuegoPage implements OnInit {
 
   nombre!: string 
   precio!: number;
-  foto_producto!: string;
-  selectedFile: File | null = null; // Archivo de imagen seleccionado
-  previewUrl: any = null; // URL para la vista previa de la imagen
+  foto_producto: any;
 
-  constructor(public alertController: AlertController, private toastController: ToastController, private router: Router, private bd: ServiceBDService, private activedroute: ActivatedRoute) {}
+  constructor(private bd: ServiceBDService, private router: Router, private activerouter: ActivatedRoute) {}
 
   ngOnInit() {
-  }
-
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-
-      // Vista previa de la imagen
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewUrl = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
   }
 
   crear (){
     this.bd.insertarJuego(this.nombre, this.precio, this.foto_producto);
     this.router.navigate(['/vistaadmin'],)
   }  
+
+  takePicture = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri
+    });
+
+    // image.webPath will contain a path that can be set as an image src.
+    // You can access the original file using image.path, which can be
+    // passed to the Filesystem API to read the raw data of the image,
+    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+    this.foto_producto = image.webPath;
+
+
+  };
+
 }
