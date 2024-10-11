@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ServiceBDService } from 'src/app/services/service-bd.service';
 
 @Component({
   selector: 'app-registro',
@@ -8,75 +10,123 @@ import { AlertController, ToastController } from '@ionic/angular';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
-  nombre: string = "";
-  correo: string = "";
-  numero: string = "";
-  contrasena: string = "";
-  confirmarContrasena: string = "";
 
-  constructor(
-    public alertController: AlertController, private toastController: ToastController, private router: Router) {}
+  form!: FormGroup;
+  id_rol: number = 2;
 
-  ngOnInit() {}
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'DIGIGAMES DICE:',
-      message: 'Registro Exitoso!',
-      buttons: ['Continuar'],
+
+  constructor(private bd: ServiceBDService, private router: Router, private alertController: AlertController, private formbuilder: FormBuilder) {}
+
+  ngOnInit() {
+
+    this.form = this.formbuilder.group({
+      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]],
+      correo: ['', [Validators.required, Validators.email]],
+      telefono: ['', [Validators.required]],
+      contrasena: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        this.passwordValidator
+      ]],
+      confirmar_contrasena: ['', [Validators.required]]
     });
-
-    await alert.present();
   }
 
-  async ingresoUsuarios() {
-    if (this.nombre === "" || this.correo === "" || this.numero === "" || this.contrasena === "") {
-      await this.presentToast('middle', 'Si quieres unirte a DIGIGAMES, completa todos los campos.');
-      return;
+    
+    passwordValidator(control: any) {
+      const password = control.value;
+      const hasLetter = /[a-zA-Z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  
+      const valid = hasLetter && hasNumber && hasSymbol;
+      return valid ? null : { invalidPassword: true };
     }
 
-    if (this.contrasena !== this.confirmarContrasena) {
-      await this.presentToast('middle', 'Las contraseñas no coinciden.');
-      return;
+
+    crear() {
+      if (this.form.valid) {
+        const { nombre, correo, telefono, contrasena } = this.form.value;
+        this.bd.insertarUsuario(this.id_rol,nombre,correo,telefono,contrasena);
+        this.router.navigate(['/login']);
+      }
     }
 
-    const nombreValido = /^[a-zA-Z ]+$/.test(this.nombre);
-    if (!nombreValido) {
-      await this.presentToast('middle', 'Tu nombre no puede contener caracteres especiales.');
-      return;
+    isNombreInvalid() {
+      const control = this.form.get('nombre');
+      return control?.touched && control.invalid;
     }
 
-    //LONGITUD DE CONTRASEÑA
-    if (this.contrasena.length <8){
-      await this.presentToast('middle','La contraseña debe tener una longitud de 8 caracteres');
-      return;
+    getNombreError() {
+      const control = this.form.get('nombre');
+      if (control?.hasError('required')) {
+        return 'El nombre no puede estar vacío.';
+      } else if (control?.hasError('pattern')) {
+        return 'El nombre solo debe contener letras.';
+      }
+      return '';
     }
 
-    //MAYUSCULAS
-    const contramayu = /[A-Z]/.test(this.contrasena);
-    if (!contramayu){
-      await this.presentToast('middle','La contraseña debe de tener al menos una mayuscula');
-      return;
+    isTelefonoInvalid() {
+      const control = this.form.get('telefono');
+      return control?.touched && control.invalid;
     }
 
-    //NUMEROS NEGATIVOS
-    const numeroneg = /-/.test(this.contrasena);
-    if(numeroneg){
-      await this.presentToast('middle','La contraseña no puede contener caracteres negativos');
-      return;
+    getTelefonoError() {
+      const control = this.form.get('telefono');
+      if (control?.hasError('required')) {
+        return 'El telefono no puede estar vacío.';
+      }
+      return '';
+    }
+  
+    isEmailInvalid() {
+      const control = this.form.get('correo');
+      return control?.touched && control.invalid;
     }
 
-    await this.presentAlert();
-    this.router.navigate(['/login']);
+
+    getEmailError() {
+      const control = this.form.get('correo');
+      if (control?.hasError('required')) {
+        return 'El correo no puede estar vacío.';
+      } else if (control?.hasError('email')) {
+        return 'Correo inválido';
+      }
+      return '';
+    }
+
+    isPasswordInvalid() {
+      const control = this.form.get('contrasena');
+      return control?.touched && control.invalid;
+    }
+
+    getPasswordError() {
+      const control = this.form.get('contrasena');
+      if (control?.hasError('required')) {
+        return 'La contraseña no puede estar vacía.';
+      } else if (control?.hasError('minlength')) {
+        return 'La contraseña debe tener al menos 8 caracteres.';
+      } else if (control?.hasError('invalidPassword')) {
+        return 'La contraseña debe contener letras, números y símbolos.';
+      }
+      return '';
+    }
+
+    arePasswordsDifferent() {
+      const password = this.form.get('contrasena')?.value;
+      const confirmPassword = this.form.get('confirmar_contrasena')?.value;
+      return password && confirmPassword && password !== confirmPassword;
+    }
+
+    getConfirmPasswordError() {
+      return 'Las contraseñas no coinciden.';
+    }
+
   }
 
-    async presentToast(position: 'middle', texto: string) {
-    const toast = await this.toastController.create({
-      position: position,
-      message: texto,
-      duration: 2000,
-    });
 
-    await toast.present();
-  }
-}
+
+
+  

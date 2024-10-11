@@ -8,13 +8,14 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { SQLite,} from '@awesome-cordova-plugins/sqlite/ngx';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import {MatIconModule} from '@angular/material/icon'
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, MatIconModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, MatIconModule, ReactiveFormsModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, provideAnimationsAsync() ], 
   bootstrap: [AppComponent],
 })

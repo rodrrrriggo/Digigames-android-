@@ -3,6 +3,7 @@ import { SQLite,SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Juego } from '../models/juego';
+import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class ServiceBDService {
 
   //TABLAS CON FOREIGN KEY
 
-  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL , correo VARCHAR(50) NOT NULL UNIQUE, telefono VARCHAR(50) NOT NULL, contrasena VARCHAR(50) NOT NULL, rol_id_rol INTEGER, FOREIGN KEY(rol_id_rol) REFERENCES rol(id_rol))";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL , correo VARCHAR(50) NOT NULL UNIQUE, telefono VARCHAR(50) NOT NULL, contrasena VARCHAR(50) NOT NULL, id_rol INTEGER, FOREIGN KEY (id_rol) REFERENCES rol(id_rol))";
 
   tablaVenta: string = "CREATE TABLE IF NOT EXISTS venta(id_venta INTEGER PRIMARY KEY AUTOINCREMENT, cantidad_venta INTEGER, total_venta INTEGER, usuarios_id_usuarios INTEGER, FOREIGN KEY(usuarios_id_usuarios) REFERENCES usuarios(id_usuario)), estado_id_estado INTEGER, FOREIGN KEY(estado_id_estado) REFERENCES estado(id_estado))";
 
@@ -33,9 +34,9 @@ export class ServiceBDService {
 
   //INSERCION DE DATOS
 
-  registroRol1: string = "INSERT OR IGNORE INTO rol(id_rol, nombre_rol) VALUES (1, 'Administrador')";
+  registroRolA: string = "INSERT OR IGNORE INTO rol(id_rol, nombre_rol) VALUES (1, 'Administrador')";
 
-  registroRol2: string = "INSERT OR IGNORE INTO rol(id_rol, nombre_rol) VALUES (2, 'Usuario')";
+  registroRolU: string = "INSERT OR IGNORE INTO rol(id_rol, nombre_rol) VALUES (2, 'Usuario')";
   
   registroJuego: string = "INSERT OR IGNORE INTO productos(id_producto, foto_producto, nombre_producto, precio) VALUES (1, '../assets/img/eafc.jpg', 'EAFC 25', 59990)";
 
@@ -74,7 +75,16 @@ export class ServiceBDService {
   }
   async crearTablas(){
     try{
-      //ejecuto la creación de tablas en orden
+
+      //usuarios
+      await this.database.executeSql(this.tablaRol, []);
+      await this.database.executeSql(this.tablaUsuarios, []);
+
+      //usuarios2
+      await this.database.executeSql(this.registroRolA, []);
+      await this.database.executeSql(this.registroRolU, []);
+
+      //productos
       await this.database.executeSql(this.tablaProductos, []);
 
       //ejecuto los insert en caso que existan
@@ -125,6 +135,31 @@ export class ServiceBDService {
       this.listaJuegos.next(items as any);
     })
   }
+
+  getUsuario(correo: string, contrasena: string) {
+    return this.database.executeSql('SELECT * FROM usuarios WHERE correo = ? AND contrasena = ?', [correo, contrasena]).then(res => {
+      let items: Usuario[] = [];
+
+      if (res.rows.length > 0) {
+        for (let i = 0; i < res.rows.length; i++) {
+          items.push({
+            id_usuario: res.rows.item(i).id_usuario,
+            nombre: res.rows.item(i).nombre,
+            telefono: res.rows.item(i).telefono,
+            correo: res.rows.item(i).correo,
+            contrasena: res.rows.item(i).contrasena,
+            id_rol: res.rows.item(i).id_rol
+          });
+        }
+      }
+      return items.length > 0 ? items[0] : null;
+    }).catch(e => {
+      console.error('Error al obtener el usuario:', e);
+      return null;
+    });
+  }
+
+
   insertarJuego(nombre_producto: string, precio: number, foto_producto: Blob){
     return this.database.executeSql('INSERT INTO Productos(foto_producto, nombre_producto, precio) VALUES (?,?,?)',[foto_producto,nombre_producto,precio,]).then((res)=>{
       this.presentAlert("Agregar", "Juego agregado exitosamente!");
@@ -150,6 +185,15 @@ export class ServiceBDService {
     }).catch(e=>{
       this.presentAlert('Modificar','Error: ' + JSON.stringify(e));
     })
+  }
+
+  insertarUsuario(id_rol: number,nombre: string, correo: string, telefono: string, contrasena: string){
+    return this.database.executeSql('INSERT INTO usuarios(id_usuario, nombre, correo, telefono, contrasena) VALUES (?,?,?,?,?)',[id_rol,nombre,correo,telefono,contrasena]).then((res)=>{
+      this.presentAlert("Agregar", "Usuario agregado exitosamente!");
+    }).catch(e=>{
+      this.presentAlert('agregar','Error: ' + JSON.stringify(e));
+    })
+    
   }
 
 }

@@ -7,36 +7,50 @@
 <ion-content [fullscreen]="true">
 <div id="container">
   <img src="assets/img/logo1.png" alt="Logo DIGIGAMES" style="height: 120px; vertical-align: middle;">
-  <ion-card color="warning">
-    <br />
-    <ion-title>
-      Registrate en DIGIGAMES</ion-title>
-    <br />
-    <ion-input label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Elige un nombre bonito"[(ngModel)]="nombre"></ion-input>
-    <br />
-    <ion-input  type="email" label="Correo Electronico" label-placement="floating" fill="outline" placeholder="email@tudominio"
-    [(ngModel)]="correo"></ion-input>
-    <br />
-    <ion-input type="number" label="Numero telefonico" label-placement="floating" fill="outline" placeholder="Ej: +56 9"[(ngModel)]="numero"></ion-input>
-    <br />
-    <ion-input type="password" label="Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
-    [counter]="true"
-    maxlength="8" [(ngModel)]="contrasena"></ion-input>
-    <br />
-    <ion-input type="password" label="Confirmar Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
-    [counter]="true"
-    maxlength="8" [(ngModel)]="confirmarContrasena"></ion-input>
-    <br />
-    <ion-button (click)="ingresoUsuarios()">REGISTRAR</ion-button>
 
-    <ion-label>
-      <p>¿Ya tienes cuenta? <a [routerLink]="['/login']">Inicia Sesion</a></p>
-    </ion-label> 
-    <br />
-  </ion-card>
+    <ion-card color="warning">
+          <br />
+          <ion-title>
+            Registrate en DIGIGAMES</ion-title>
+          <br />
+
+
+      <form [formGroup]="form" (ngSubmit)="crear()">
+              <br />
+              <ion-input label="Nombre" label-placement="floating" fill="outline" placeholder="Ingresa tu nombre"
+                    formControlName="nombre" (ionBlur)="form.get('nombre')?.markAsTouched()"></ion-input>
+                  <p *ngIf="isNombreInvalid()">{{ getNombreError() }}</p>
+                  <br />
+              <br />
+              <ion-input type="number" label="Celular" label-placement="floating" fill="outline" placeholder="Ingresa tu telefono"
+                    formControlName="telefono" (ionBlur)="form.get('telefono')?.markAsTouched()"></ion-input>
+                  <p *ngIf="isTelefonoInvalid()">{{ getTelefonoError() }}</p>
+              <br />
+              <ion-input label="Correo electrónico" type="email" label-placement="floating" fill="outline"
+                    placeholder="email@tudominio" formControlName="correo" (ionBlur)="form.get('correo')?.markAsTouched()"></ion-input>
+                  <p *ngIf="isEmailInvalid()">{{ getEmailError() }}</p>
+              <br />
+              <ion-input label="Contraseña" type="password" label-placement="floating" fill="outline"
+                    placeholder="Ingresa tu contraseña" formControlName="contrasena" (ionBlur)="form.get('contrasena')?.markAsTouched()">
+                    <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+                  </ion-input>
+                  <p *ngIf="isPasswordInvalid()">{{ getPasswordError() }}</p>
+              <br />
+              <ion-input label="Confirmar Contraseña" type="password" label-placement="floating" fill="outline"
+                    placeholder="Confirma tu contraseña" formControlName="confirmar_contrasena" (ionBlur)="form.get('confirmar_contrasena')?.markAsTouched()">
+                    <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+                  </ion-input>
+                  <p *ngIf="arePasswordsDifferent()">{{ getConfirmPasswordError() }}</p>
+              <br />
+              <ion-button type="submit" [disabled]="form.invalid">Registrarte</ion-button>
+
+              <ion-label>
+                <p>¿Ya tienes cuenta? <a [routerLink]="['/login']">Inicia Sesion</a></p>
+              </ion-label>
+              <br /> 
+      </form>
+    </ion-card>
   </div>
-
-
 </ion-content>
 
 <ion-footer translucent="true">
