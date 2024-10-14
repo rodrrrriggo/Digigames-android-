@@ -48,7 +48,7 @@ export class RegistroPage implements OnInit {
     crear() {
       if (this.form.valid) {
         const { nombre, correo, telefono, contrasena } = this.form.value;
-        this.bd.insertarUsuario(this.id_rol,nombre,correo,telefono,contrasena);
+        this.bd.insertarUsuario(nombre,correo,telefono,contrasena,this.id_rol);
         this.router.navigate(['/login']);
       }
     }

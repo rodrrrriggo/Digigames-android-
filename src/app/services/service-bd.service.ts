@@ -41,6 +41,9 @@ export class ServiceBDService {
   registroJuego: string = "INSERT OR IGNORE INTO productos(id_producto, foto_producto, nombre_producto, precio) VALUES (1, '../assets/img/eafc.jpg', 'EAFC 25', 59990)";
 
 
+  registroAdmin: string = "INSERT or IGNORE INTO usuarios(id_usuario, nombre, correo, telefono, contrasena, id_rol) VALUES (1, 'Rodrigo', 'rodrigo@digigames.cl', '12345678', 'Ola12345@', 1)";
+
+
   //VARIABLE OBSERVABLE
 
   listaJuegos = new BehaviorSubject ([]);
@@ -84,6 +87,8 @@ export class ServiceBDService {
       await this.database.executeSql(this.registroRolA, []);
       await this.database.executeSql(this.registroRolU, []);
 
+      await this.database.executeSql(this.registroAdmin, []);
+
       //productos
       await this.database.executeSql(this.tablaProductos, []);
 
@@ -109,6 +114,7 @@ export class ServiceBDService {
   fetchJuegos(): Observable<Juego[]>{
     return this.listaJuegos.asObservable();
   }
+  
 
   dbState(){
     return this.isDBReady.asObservable();
@@ -187,8 +193,8 @@ export class ServiceBDService {
     })
   }
 
-  insertarUsuario(id_rol: number,nombre: string, correo: string, telefono: string, contrasena: string){
-    return this.database.executeSql('INSERT INTO usuarios(id_usuario, nombre, correo, telefono, contrasena) VALUES (?,?,?,?,?)',[id_rol,nombre,correo,telefono,contrasena]).then((res)=>{
+  insertarUsuario(nombre: string, correo: string, telefono: string, contrasena: string, id_rol: number){
+    return this.database.executeSql('INSERT INTO usuarios (nombre, correo, telefono, contrasena, id_rol) VALUES (?, ?, ?, ?, ?);',[nombre,correo,telefono,contrasena,id_rol]).then((res)=>{
       this.presentAlert("Agregar", "Usuario agregado exitosamente!");
     }).catch(e=>{
       this.presentAlert('agregar','Error: ' + JSON.stringify(e));

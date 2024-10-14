@@ -20,8 +20,11 @@
       <ion-card-subtitle>{{x.precio}}</ion-card-subtitle>
       
     </ion-card-header>
-    <ion-button color="success" (click)="editar(x)">Editar</ion-button>
-    <ion-button color="danger" (click)="eliminar(x)" >Eliminar</ion-button>
+    <ion-button *ngIf="rolUsuario ==='1'" color="success" (click)="editar(x)">Editar</ion-button>
+    <ion-button *ngIf="rolUsuario ==='1'" color="danger" (click)="eliminar(x)">Eliminar</ion-button>
+
+    <ion-button *ngIf="rolUsuario === '2'" color="primary">Comprar</ion-button>
+
       <div class="icon-container">
         <ion-card-title>Disponible en:</ion-card-title>
         <ion-icon name="logo-steam"></ion-icon>
@@ -30,193 +33,41 @@
       </div>
   </ion-card>
 
-  <!-- <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/elden.jpg" />
-    <ion-card-header>
-      <ion-card-title>Elden Ring</ion-card-title>
-      <ion-card-subtitle>35.000</ion-card-subtitle>
-      
-    </ion-card-header>
-  
-    
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-      <ion-icon name="logo-playstation"></ion-icon>
-    </div>
-  </ion-card>
-
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/cod bo6.jpg" />
-    <ion-card-header>
-      <ion-card-title>COD: Black Ops 6</ion-card-title>
-      <ion-card-subtitle>64.000</ion-card-subtitle>
-    </ion-card-header>
-  
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-      <ion-icon name="logo-playstation"></ion-icon>
-      <ion-icon name="logo-xbox"></ion-icon>
-    </div>
-  </ion-card>
-
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/gta5.jpg" />
-    <ion-card-header>
-      <ion-card-title>Grand Theft Auto 5</ion-card-title>
-      <ion-card-subtitle>13.500</ion-card-subtitle>
-    </ion-card-header>
-  
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-      <ion-icon name="logo-playstation"></ion-icon>
-      <ion-icon name="logo-xbox"></ion-icon>
-    </div>
-  </ion-card>
-
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/eafc.jpg" />
-    <ion-card-header>
-      <ion-card-title>EAFC 25</ion-card-title>
-      <ion-card-subtitle>59.990</ion-card-subtitle>
-    </ion-card-header>
-  
-    
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-      <ion-icon name="logo-playstation"></ion-icon>
-      <ion-icon name="logo-xbox"></ion-icon>
-    </div>
-  </ion-card>
-
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/f124.jpg" />
-    <ion-card-header>
-      <ion-card-title>F1 24: Champions Edition</ion-card-title>
-      <ion-card-subtitle>40.000</ion-card-subtitle>
-    </ion-card-header>
-  
-    
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-      <ion-icon name="logo-playstation"></ion-icon>
-      <ion-icon name="logo-xbox"></ion-icon>
-    </div>
-
-    
-  </ion-card>
-
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/reddead.jpg" />
-    <ion-card-header>
-      <ion-card-title>Red Dead Redemption 2</ion-card-title>
-      <ion-card-subtitle>19.999</ion-card-subtitle>
-    </ion-card-header>
-  
-    
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-      <ion-icon name="logo-playstation"></ion-icon>
-      <ion-icon name="logo-xbox"></ion-icon>
-    </div>
-  </ion-card>
-
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/concord.jpg" />
-    <ion-card-header>
-      <ion-card-title>Concord</ion-card-title>
-      <ion-card-subtitle>28.000</ion-card-subtitle>
-    </ion-card-header>
-  
-    
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-      <ion-icon name="logo-playstation"></ion-icon>
-    </div>
-
-    
-  </ion-card>
-
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/gta4.jpg" />
-    <ion-card-header>
-      <ion-card-title>GTA 4: Episodes From Liberty City</ion-card-title>
-      <ion-card-subtitle>15.000</ion-card-subtitle>
-    </ion-card-header>
-  
-    
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-    </div>
-
-    
-  </ion-card>
-
-  <ion-card class="card1">
-    <ion-img class="card-imagen" alt="Silhouette of mountains" src="assets/img/morales.jpg" />
-    <ion-card-header>
-      <ion-card-title>Spider-man: Miles Morales</ion-card-title>
-      <ion-card-subtitle>33.495</ion-card-subtitle>
-    </ion-card-header>
-  
-    
-
-    <ion-button color="success">Editar</ion-button>
-    <ion-button color="danger">Eliminar</ion-button>
-    <div class="icon-container">
-      <ion-card-title>Disponible en:</ion-card-title>
-      <ion-icon name="logo-steam"></ion-icon>
-      <ion-icon name="logo-playstation"></ion-icon>
-    </div>
-
-    
-  </ion-card>-->
-
-<!--</ion-row>-->
-
 </ion-content>
 </ion-content>
 
 
-<ion-footer [translucent]="true">
-    
-    <ion-tab-bar color="warning" slot="bottom">
-      <ion-tab-button tab="home" [routerLink]="['/perfiladmin']" >
-        <mat-icon>admin_panel_settings</mat-icon>
-        Tu Perfil administrativo
-      </ion-tab-button>
-      <ion-tab-button tab="library" [routerLink]="['/estadisticasadmin']">
-        <ion-icon name="analytics-outline"></ion-icon>
-        Estadisticas y revisiones
-      </ion-tab-button>
-      <ion-tab-button tab="library" [routerLink]="['/agregarjuego']">
+<ion-footer *ngIf="rolUsuario === '1'" [translucent]="true">
+  <ion-tab-bar color="warning" slot="bottom">
+    <ion-tab-button tab="home" [routerLink]="['/perfiladmin']">
+      <mat-icon>admin_panel_settings</mat-icon>
+      Tu Perfil administrativo
+    </ion-tab-button>
+    <ion-tab-button tab="library" [routerLink]="['/estadisticasadmin']">
+      <ion-icon name="analytics-outline"></ion-icon>
+      Estadísticas y revisiones
+    </ion-tab-button>
+    <ion-tab-button tab="library" [routerLink]="['/agregarjuego']">
       <ion-icon name="duplicate-outline"></ion-icon>
       Agregar Juegos
-      </ion-tab-button>
-    </ion-tab-bar>
-
-
+    </ion-tab-button>
+  </ion-tab-bar>
 </ion-footer>
+
+<!----------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------->
+
+<ion-footer *ngIf="rolUsuario === '2'" [translucent]="true">
+  <ion-tab-bar color="warning" slot="bottom">
+    <ion-tab-button tab="home" [routerLink]="['/perfil']">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      Tu Perfil
+    </ion-tab-button>
+    <ion-tab-button tab="library" [routerLink]="['/carrito']">
+      <mat-icon>shopping_cart</mat-icon>
+      Carrito
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-footer>
+

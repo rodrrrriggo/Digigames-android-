@@ -10,6 +10,8 @@ import { ServiceBDService } from 'src/app/services/service-bd.service';
 })
 export class VistaadminPage implements OnInit {
   
+  rolUsuario: string | null = null;
+
 arregloJuegos = [{
   nombre_producto:'',
   precio:0,
@@ -19,6 +21,9 @@ arregloJuegos = [{
   constructor(private alertController: AlertController, private bd: ServiceBDService, private router: Router) {}
 
   ngOnInit() {
+
+
+    this.rolUsuario = localStorage.getItem('id_rol'); // admin o cliente
 
     this.bd.dbState().subscribe(res=>{
       if(res){
