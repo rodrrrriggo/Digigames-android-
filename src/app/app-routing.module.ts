@@ -72,9 +72,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/verusuarios/verusuarios.module').then( m => m.VerusuariosPageModule)
   },
   {
+    path: 'modifdatos',
+    loadChildren: () => import('./pages/modifdatos/modifdatos.module').then( m => m.ModifdatosPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/notfound/notfound.module').then( m => m.NotfoundPageModule)
   },
+  
+
   
 
   

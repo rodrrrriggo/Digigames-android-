@@ -31,14 +31,13 @@
       <br />
 
       <ion-label position="stacked">Telefono</ion-label>
-      <ion-input [readonly]="true" type="email" value="{{correo}}" fill="outline"></ion-input>
+      <ion-input [readonly]="true" type="number" value="{{telefono}}" fill="outline"></ion-input>
       <br />
       
       <p>Modifica tu contraseña <a [routerLink]="['/cambiocontra']">Cambiar contraseña</a> </p>
       <br />
       <!-- Botón para confirmar la modificación -->
-       <p>¿Necesitas actualizar tus datos?</p>
-      <ion-button (click)="ingresoUsuarios()">MODIFICAR</ion-button>
+       <p>¿Necesitas actualizar tus datos? <a [routerLink]="['/modifdatos']">Modificar tus datos</a> </p> 
       <br />
     </ion-card>
   </div>

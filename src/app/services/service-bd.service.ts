@@ -4,6 +4,7 @@ import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Juego } from '../models/juego';
 import { Usuario } from '../models/usuario';
+import { Users } from '../models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,7 @@ export class ServiceBDService {
   //VARIABLE OBSERVABLE PARA EL STATUS DE LA BD
 
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private usuarioBD = new BehaviorSubject<Users | null>(null);
 
   constructor(private sqlite: SQLite, private platform: Platform, private alertController: AlertController) {
     this.crearBD()
@@ -193,6 +195,31 @@ export class ServiceBDService {
     });
   }
 
+  getUsuarioPerfil(id_usuario: number): Promise<void> {
+    return this.database.executeSql('SELECT * FROM usuarios WHERE id_usuario = ?;', [id_usuario])
+      .then(res => {
+        if (res.rows.length > 0) {
+          const users: Users = new Users(
+            res.rows.item(0).id_usuario,
+            res.rows.item(0).nombre,
+            res.rows.item(0).telefono,    // Asegúrate de que este campo exista en tu tabla 'usuarios'
+            res.rows.item(0).correo,
+            res.rows.item(0).contrasena,  // Asegúrate de que este campo exista si lo necesitas
+            res.rows.item(0).id_rol
+          );
+          this.usuarioBD.next(users);  // Actualiza el observable con los datos del usuario
+        }
+      })
+      .catch(err => {
+        console.error('Error al obtener el perfil del usuario', err);
+      });
+  }
+
+  fetchUsuario(): Observable<Users| null>{
+    return this.usuarioBD.asObservable();
+
+  }
+
 
   insertarJuego(nombre_producto: string, precio: number, foto_producto: Blob){
     return this.database.executeSql('INSERT INTO Productos(foto_producto, nombre_producto, precio) VALUES (?,?,?)',[foto_producto,nombre_producto,precio,]).then((res)=>{
@@ -229,6 +256,15 @@ export class ServiceBDService {
     })
     
   }
+
+  editarUsuario(id_usuario: number, nombre: string, correo: string, telefono: string) {
+    const query = `UPDATE usuarios SET nombre = ?, correo = ?, telefono = ? WHERE id_usuario = ?`;
+    return this.database.executeSql(query, [nombre, correo, telefono, id_usuario]).then(() => {
+    }).catch(e => {
+      this.presentAlert('Error', 'Error al modificar los datos del usuario: ' + JSON.stringify(e));
+    });
+  }
+
 
 }
 

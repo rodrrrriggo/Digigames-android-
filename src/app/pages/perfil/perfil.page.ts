@@ -15,6 +15,7 @@ export class PerfilPage implements OnInit {
   nombre: string = '';  
   correo: string = '';  
   contrasena: string = '';
+  telefono: string = '';
   confirmarContrasena: string = '';
   usuario: Usuario | null = null;
 
@@ -40,6 +41,7 @@ export class PerfilPage implements OnInit {
           // Asignar los datos del usuario obtenidos desde la base de datos
           this.usuario = usuario;
           this.nombre = usuario.nombre || '';  // Asigna el nombre del usuario
+          this.telefono = usuario.telefono || '';  // Asigna el telefono del usuario
           this.correo = usuario.correo || '';  // Asigna el correo del usuario
         },
         (error) => {

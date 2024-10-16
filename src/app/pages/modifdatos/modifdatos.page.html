@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/catalogo"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 55px; margin-right: 50px;">
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <img src="assets/img/logo1.png" alt="Logo DIGIGAMES" style="height: 120px; vertical-align: middle;">
+  
+      <ion-card color="warning">
+            <br />
+            <ion-title>
+              Modifica tus datos en DIGIGAMES</ion-title>
+            <br />
+
+            <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+              <ion-list>
+                <ion-input label="Nombre" label-placement="floating" fill="outline"
+                  placeholder="Ingrese su nuevo nombre" formControlName="nombre">
+                </ion-input>
+                <p color="warning" *ngIf="isNombreInvalid()">{{ getNombreError() }}</p>
+                <br />
+        
+                <ion-input label="Correo electrónico" type="email" label-placement="floating" fill="outline"
+                  placeholder="Ingrese su nuevo correo" formControlName="correo">
+                </ion-input>
+                <p color="warning" *ngIf="isCorreoInvalid()">{{ getCorreoError() }}</p>
+                <br />
+        
+                <ion-input label="Teléfono" type="tel" label-placement="floating" fill="outline"
+                  placeholder="Ingrese su nuevo número de teléfono" formControlName="telefono">
+                </ion-input>
+                <p color="warning" *ngIf="isTelefonoInvalid()">{{ getTelefonoError() }}</p>
+                <br />
+        
+                  <ion-button color="success" type="submit" [disabled]="editUserForm.invalid">
+                    Guardar cambios
+                  </ion-button>
+              </ion-list>
+            </form>
+      </ion-card>
+  </div>
+</ion-content>
