@@ -1,7 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="warning">
     <ion-buttons slot="start">
-      <ion-back-button default-href="'/vistarol'"></ion-back-button>
     </ion-buttons>
     <ion-title>Bienvenido</ion-title>
   </ion-toolbar>
@@ -20,7 +19,8 @@
       <br />
       <ion-input type="password" label="Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
       [counter]="true" [(ngModel)]="contrasena"></ion-input>
-      <ion-button class="boton" color="success" (click)="loginUsuario()">Iniciar sesión</ion-button>
+      <br />
+      <ion-button class="boton" (click)="loginUsuario()">Iniciar sesión</ion-button>
       <br />
       <ion-label>
         <p>Olvide mi contraseña. <a [routerLink]="['/modifcontra']" >Recuperar contraseña</a></p>

@@ -41,7 +41,9 @@ export class ServiceBDService {
   registroJuego: string = "INSERT OR IGNORE INTO productos(id_producto, foto_producto, nombre_producto, precio) VALUES (1, '../assets/img/eafc.jpg', 'EAFC 25', 59990)";
 
 
-  registroAdmin: string = "INSERT or IGNORE INTO usuarios(id_usuario, nombre, correo, telefono, contrasena, id_rol) VALUES (1, 'Rodrigo', 'rodrigo@digigames.cl', '12345678', 'Ola12345@', 1)";
+  registroAdmin: string = "INSERT or IGNORE INTO usuarios(id_usuario, nombre, correo, telefono, contrasena, id_rol) VALUES (1, 'RodrigoAdminDG', 'rod.guzmang@digigames.cl', '12345678', 'Ola12345@', 1)";
+
+  registroAdmin2: string = "INSERT or IGNORE INTO usuarios(id_usuario, nombre, correo, telefono, contrasena, id_rol) VALUES (2, 'IgnacioAdminDG', 'igna.gonzalezg@digigames.cl', '12345678', 'Ola12345@', 1)";
 
 
   //VARIABLE OBSERVABLE
@@ -88,6 +90,7 @@ export class ServiceBDService {
       await this.database.executeSql(this.registroRolU, []);
 
       await this.database.executeSql(this.registroAdmin, []);
+      await this.database.executeSql(this.registroAdmin2, []);
 
       //productos
       await this.database.executeSql(this.tablaProductos, []);
@@ -165,10 +168,35 @@ export class ServiceBDService {
     });
   }
 
+  getUsuarioById(id_usuario: number): Observable<Usuario> {
+    return new Observable((observer) => {
+      this.database.executeSql('SELECT * FROM usuarios WHERE id_usuario = ?', [id_usuario])
+        .then((res) => {
+          if (res.rows.length > 0) {
+            let usuario: Usuario = {
+              id_usuario: res.rows.item(0).id_usuario,
+              nombre: res.rows.item(0).nombre,
+              correo: res.rows.item(0).correo,
+              telefono: res.rows.item(0).telefono,
+              contrasena: res.rows.item(0).contrasena,
+              id_rol: res.rows.item(0).id_rol
+            };
+            observer.next(usuario);
+            observer.complete();
+          } else {
+            observer.error('No se encontró el usuario');
+          }
+        })
+        .catch((e) => {
+          observer.error('Error al obtener el usuario: ' + JSON.stringify(e));
+        });
+    });
+  }
+
 
   insertarJuego(nombre_producto: string, precio: number, foto_producto: Blob){
     return this.database.executeSql('INSERT INTO Productos(foto_producto, nombre_producto, precio) VALUES (?,?,?)',[foto_producto,nombre_producto,precio,]).then((res)=>{
-      this.presentAlert("Agregar", "Juego agregado exitosamente!");
+      this.presentAlert("Agregar", "Juego agregado exitosamente al catalogo!");
       this.getJuego();
     }).catch(e=>{
       this.presentAlert('Agregar','Error: ' + JSON.stringify(e));
@@ -177,7 +205,7 @@ export class ServiceBDService {
 
   eliminarProducto(id_producto : string){
     return this.database.executeSql('DELETE FROM productos WHERE id_producto = ?', [id_producto]).then((res)=>{
-      this.presentAlert("Eliminar","Producto eliminado de manera correcta");
+      this.presentAlert("Eliminar","Juego eliminado correctamente del catalogo!");
       this.getJuego();
     }).catch(e=>{
       this.presentAlert('Eliminar', 'Error : ' +JSON.stringify(e));
@@ -186,7 +214,7 @@ export class ServiceBDService {
 
   editarProducto(id_producto: string, nombre_producto: string,precio: number, foto_producto: Blob ){
     return this.database.executeSql('UPDATE Productos SET nombre_producto = ?, precio = ?, foto_producto = ? WHERE id_producto = ?',[nombre_producto,precio,foto_producto,id_producto]).then((res)=>{
-      this.presentAlert("Modificar", "Juego modificado de manera correcta");
+      this.presentAlert("Modificar", "Juego modificado de manera correcta!");
       this.getJuego();
     }).catch(e=>{
       this.presentAlert('Modificar','Error: ' + JSON.stringify(e));

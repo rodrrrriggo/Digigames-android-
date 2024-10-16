@@ -68,9 +68,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/estadisticasadmin/estadisticasadmin.module').then( m => m.EstadisticasadminPageModule)
   },
   {
+    path: 'verusuarios',
+    loadChildren: () => import('./pages/verusuarios/verusuarios.module').then( m => m.VerusuariosPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/notfound/notfound.module').then( m => m.NotfoundPageModule)
   },
+  
+
   
 
   

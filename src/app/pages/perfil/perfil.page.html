@@ -1,11 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="warning">
-          <ion-buttons slot="start">
-            <ion-back-button default-href="'/catalogo'"></ion-back-button>
-          </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/catalogo"></ion-back-button>
+    </ion-buttons>
     <ion-title>
       <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 55px; margin-right: 50px;">
-      </ion-title>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,36 +15,37 @@
     <ion-icon name="person"></ion-icon>
     <ion-card color="warning">
       <br />
-      <ion-title>Bienvenido/a: </ion-title>
+      <ion-title>Bienvenido/a: {{nombre}}</ion-title> <!-- Mostrar el nombre del usuario -->
       <br />
-      <p>Modifica tu perfil aqui abajo</p>
+      <p>Aqui estan los datos de tu perfil</p>
       <br />
-      <ion-input label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Elige un nombre bonito" [(ngModel)]="nombre"></ion-input>
+      
+      <!-- Mostrar el nombre del usuario (solo lectura) -->
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [readonly]="true" value="{{nombre}}" fill="outline"></ion-input>
       <br />
-      <ion-input type="email" label="Correo Electronico" label-placement="floating" fill="outline" placeholder="email@tudominio"
-      ngModel
-      email [(ngModel)]="correo"></ion-input>
-      <br />
-      <p>Modifica tu contraseña <a [routerLink]="['/cambiocontra']">Cambiar contraseña</a> </p>
 
+      <!-- Mostrar el correo del usuario (solo lectura) -->
+      <ion-label position="stacked">Correo electrónico</ion-label>
+      <ion-input [readonly]="true" type="email" value="{{correo}}" fill="outline"></ion-input>
       <br />
-      <p>Confirma tus cambios</p>
-      <ion-input type="password" label="Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
-      [counter]="true"
-      maxlength="8" [(ngModel)]="contrasena"></ion-input>
+
+      <ion-label position="stacked">Telefono</ion-label>
+      <ion-input [readonly]="true" type="email" value="{{correo}}" fill="outline"></ion-input>
       <br />
-      <ion-input type="password" label="Confirmar Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
-      [counter]="true"
-      maxlength="8" [(ngModel)]="confirmarContrasena"></ion-input>
+      
+      <p>Modifica tu contraseña <a [routerLink]="['/cambiocontra']">Cambiar contraseña</a> </p>
       <br />
+      <!-- Botón para confirmar la modificación -->
+       <p>¿Necesitas actualizar tus datos?</p>
       <ion-button (click)="ingresoUsuarios()">MODIFICAR</ion-button>
       <br />
     </ion-card>
-    </div>
+  </div>
 </ion-content>
 
 <ion-footer translucent="true">
   <ion-tab-bar color="warning" slot="bottom">
-    
+    <!-- Puedes añadir iconos u opciones del menú aquí -->
   </ion-tab-bar>
 </ion-footer>

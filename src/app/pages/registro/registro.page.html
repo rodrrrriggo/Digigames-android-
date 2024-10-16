@@ -17,7 +17,7 @@
 
       <form [formGroup]="form" (ngSubmit)="crear()">
               <br />
-              <ion-input label="Nombre" label-placement="floating" fill="outline" placeholder="Ingresa tu nombre"
+              <ion-input label="Nombre" label-placement="floating" fill="outline" placeholder="Ingresa tu nombre de usuario"
                     formControlName="nombre" (ionBlur)="form.get('nombre')?.markAsTouched()"></ion-input>
                   <p *ngIf="isNombreInvalid()">{{ getNombreError() }}</p>
                   <br />
