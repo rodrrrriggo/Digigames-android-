@@ -12,6 +12,8 @@ import { ServiceBDService } from 'src/app/services/service-bd.service';
 export class PerfiladminPage implements OnInit {
 
   nombre: string = '';  
+  correo: string = ''; 
+  telefono: string = ''; 
   usuario: Usuario | null = null;
 
   constructor(
@@ -35,6 +37,8 @@ export class PerfiladminPage implements OnInit {
         (usuario: Usuario) => {
           // Asignar los datos del usuario obtenidos desde la base de datos
           this.usuario = usuario;
+          this.correo = usuario.correo || '';
+          this.telefono = usuario.telefono || '';
           this.nombre = usuario.nombre || '';  // Asigna el nombre del usuario
         },
         (error) => {
