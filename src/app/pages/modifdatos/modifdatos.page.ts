@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Usuario } from 'src/app/models/usuario';
 import { ServiceBDService } from 'src/app/services/service-bd.service';
 
@@ -18,6 +18,7 @@ export class ModifdatosPage implements OnInit {
     private formBuilder: FormBuilder,
     private serviceBD: ServiceBDService,
     private alertController: AlertController,
+    private toastController: ToastController,
     private navCtrl: NavController
   ) { }
 
@@ -29,8 +30,12 @@ export class ModifdatosPage implements OnInit {
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$')]], // Validación para números
     });
 
+  // Obtener el ID del usuario desde localStorage
+  const userId = parseInt(localStorage.getItem('id_usuario') || '0', 10);
+
+  if (userId > 0) {
     // Obtener los datos del usuario y rellenar el formulario
-    this.serviceBD.getUsuarioById(3).subscribe((usuario) => {  // Cambiar ID si es necesario
+    this.serviceBD.getUsuarioById(userId).subscribe((usuario) => {
       this.currentUser = usuario;
       this.editUserForm.patchValue({
         nombre: usuario.nombre,
@@ -38,7 +43,12 @@ export class ModifdatosPage implements OnInit {
         telefono: usuario.telefono,
       });
     });
+  } else {
+    console.error('ID de usuario no válido');
+    // Aquí puedes redirigir al usuario a la página de login o mostrar un mensaje
+    this.navCtrl.navigateBack('/login'); // Redirigir si el ID no es válido
   }
+}
 
   isNombreInvalid() {
     return this.editUserForm.get('nombre')?.touched && this.editUserForm.get('nombre')?.invalid;
@@ -86,20 +96,21 @@ export class ModifdatosPage implements OnInit {
     if (this.editUserForm.valid) {
       const { nombre, correo, telefono } = this.editUserForm.value;
       this.serviceBD.editarUsuario(this.currentUser.id_usuario, nombre, correo, telefono).then(() => {
-        this.presentAlert('Perfecto!', 'Tus datos han sido actualizados correctamente.');
+        this.presentToast('Tus datos han sido actualizados correctamente.');
         this.navCtrl.navigateBack('/vistaadmin');
       }).catch((error) => {
-        this.presentAlert('Error', 'Hubo un problema al actualizar tus datos.');
+        this.presentToast('Error', 'Hubo un problema al actualizar tus datos.');
       });
     }
   }
 
-  async presentAlert(titulo: string, mensaje: string) {
-    const alert = await this.alertController.create({
-      header: titulo,
+  async presentToast(mensaje: string, color: string = 'success') {
+    const toast = await this.toastController.create({
       message: mensaje,
-      buttons: ['OK'],
+      duration: 3000, // Duración del Toast (2 segundos)
+      position: 'bottom', // Mostrar en la parte inferior
+      color: color
     });
-    await alert.present();
+    await toast.present();
   }
 }

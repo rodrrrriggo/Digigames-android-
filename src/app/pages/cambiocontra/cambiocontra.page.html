@@ -1,39 +1,56 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="warning">
-          <ion-buttons slot="start">
-            <ion-back-button default-href="'/catalogo'"></ion-back-button>
-          </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="'/catalogo'"></ion-back-button>
+    </ion-buttons>
     <ion-title>
       <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 55px; margin-right: 50px;">
-      </ion-title>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div id="container">
-    <ion-icon name="person"></ion-icon>
+
+    <img src="assets/img/logo1.png" alt="Logo DIGIGAMES" style="height: 120px; vertical-align: middle;">
+
     <ion-card color="warning">
       <br />
-      <p>Ingresa tu nueva contraseña</p>
+      <ion-title>
+        Modifica tu contraseña</ion-title>
       <br />
-      <ion-input type="password" label="Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
-      [counter]="true"
-      maxlength="8" [(ngModel)]="contrasena"></ion-input>
-      <br />
-      <p>Confirma tu contraseña</p>
-      <br />
-      <ion-input type="password" label="Confirmar Contraseña" label-placement="floating" fill="outline" placeholder="Ingresa tu contraseña"
-      [counter]="true"
-      maxlength="8" [(ngModel)]="confirmarContrasena"></ion-input>
-      <br />
-      <ion-button (click)="cambiocontra()">MODIFICAR</ion-button>
-    </ion-card>
+    
+
+
+    <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+      <ion-list>  
+        <!-- Campo para la nueva contraseña -->
+        <ion-input label="Contraseña" type="password" label-placement="floating" fill="outline"
+          placeholder="Ingresa tu nueva contraseña" formControlName="contrasena">
+        </ion-input>
+        <p color="warning" *ngIf="isPasswordInvalid()">{{ getPasswordError() }}</p>
+        <br />
+        
+        <!-- Campo para confirmar la contraseña -->
+        <ion-input label="Confirmar contraseña" type="password" label-placement="floating" fill="outline"
+          placeholder="Confirma tu nueva contraseña" formControlName="confirmar_contrasena">
+        </ion-input>
+        <p color="warning" *ngIf="arePasswordsDifferent()">{{ getConfirmPasswordError() }}</p>
+        <br />
+      </ion-list>
+
+      <ion-button expand="full" type="submit" [disabled]="!editUserForm.valid || arePasswordsDifferent()">
+        Guardar Cambios
+      </ion-button>
+    </form>
+  </ion-card>
   </div>
 
-  
 </ion-content>
 
 <ion-footer translucent="true">
   <ion-tab-bar color="warning" slot="bottom">
-    
+    <!-- Puedes añadir iconos u opciones del menú aquí -->
   </ion-tab-bar>
+</ion-footer>
+

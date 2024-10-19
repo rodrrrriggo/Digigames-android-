@@ -215,6 +215,18 @@ export class ServiceBDService {
       });
   }
 
+  obtenerTodosLosUsuarios() {
+    const query = `SELECT * FROM usuarios`;
+    return this.database.executeSql(query, []).then(res => {
+      const usuarios = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        usuarios.push(res.rows.item(i));
+      }
+      return usuarios;
+    });
+  }
+
+
   fetchUsuario(): Observable<Users| null>{
     return this.usuarioBD.asObservable();
 
@@ -263,6 +275,17 @@ export class ServiceBDService {
     }).catch(e => {
       this.presentAlert('Error', 'Error al modificar los datos del usuario: ' + JSON.stringify(e));
     });
+  }
+
+  editarUsuarioContra(id_usuario: number, contrasena: string) {
+    const query = `UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?`;
+    return this.database.executeSql(query, [contrasena, id_usuario])
+      .then(() => {
+        // Mensaje opcional
+      })
+      .catch(e => {
+        this.presentAlert('Error', 'Error al modificar la contraseña del usuario: ' + JSON.stringify(e));
+      });
   }
 
 

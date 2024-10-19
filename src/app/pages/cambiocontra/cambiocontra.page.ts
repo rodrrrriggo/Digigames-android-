@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
+import { Usuario } from 'src/app/models/usuario';
+import { ServiceBDService } from 'src/app/services/service-bd.service';
 
 @Component({
   selector: 'app-cambiocontra',
@@ -9,65 +11,82 @@ import { AlertController, ToastController } from '@ionic/angular';
 })
 export class CambiocontraPage implements OnInit {
 
-  contrasena: string = "";
-  confirmarContrasena: string = "";
+  editUserForm!: FormGroup;
+  currentUser!: Usuario;
 
-  constructor(public alertController: AlertController, private toastController: ToastController, private router: Router) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private serviceBD: ServiceBDService,
+    private alertController: AlertController,
+    private navCtrl: NavController,
+    private toastController: ToastController
+  ) { }
 
-  ngOnInit() {}
-
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'DIGIGAMES DICE:',
-      message: 'Contraseña modificada, Inicia sesion nuevamente.',
-      buttons: ['Continuar'],
+  ngOnInit() {
+    // Crear el formulario con los validadores
+    this.editUserForm = this.formBuilder.group({
+      contrasena: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(9)]],
+      confirmar_contrasena: ['', [Validators.required]]
     });
-
-    await alert.present();
+  
+    // Obtener los datos del usuario y rellenar el formulario (si fuera necesario)
+    this.serviceBD.getUsuarioById(3).subscribe((usuario) => {
+      this.currentUser = usuario;
+      this.editUserForm.patchValue({
+        contrasena: '',  // No precargar la contraseña
+        confirmar_contrasena: ''  // Campo para confirmar la contraseña
+      });
+    });
   }
 
-  async cambiocontra() {
-    if (this.contrasena === "") {
-      await this.presentToast('middle', 'Faltan campos por modificar!');
-      return;
+  onSubmit() {
+    if (this.editUserForm.valid && !this.arePasswordsDifferent()) {
+      const { contrasena } = this.editUserForm.value;
+      this.serviceBD.editarUsuarioContra(this.currentUser.id_usuario, contrasena).then(() => {
+        this.presentToast('Tu contraseña fue modificada con éxito, inicia sesión nuevamente.'); // Mostrar Toast en lugar de alerta
+        this.navCtrl.navigateBack('/login');
+      }).catch((error) => {
+        this.presentToast('Hubo un problema al actualizar tu contraseña.', 'danger');
+      });
     }
-
-    if (this.contrasena !== this.confirmarContrasena) {
-      await this.presentToast('middle', 'Las contraseñas no coinciden.');
-      return;
-    }
-
-    //LONGITUD DE CONTRASEÑA
-    if (this.contrasena.length <8){
-      await this.presentToast('middle','La contraseña debe tener una longitud de 8 caracteres');
-      return;
-    }
-
-    //MAYUSCULAS
-    const contramayu = /[A-Z]/.test(this.contrasena);
-    if (!contramayu){
-      await this.presentToast('middle','La contraseña debe de tener al menos una mayuscula');
-      return;
-    }
-
-    //NUMEROS NEGATIVOS
-    const numeroneg = /-/.test(this.contrasena);
-    if(numeroneg){
-      await this.presentToast('middle','La contraseña no puede contener caracteres negativos');
-      return;
-    }
-
-    await this.presentAlert();
-    this.router.navigate(['/login']);
   }
 
-    async presentToast(position: 'middle', texto: string) {
+  isPasswordInvalid() {
+    const control = this.editUserForm.get('contrasena');
+    return control?.touched && control.invalid;
+  }
+
+  getPasswordError() {
+    const control = this.editUserForm.get('contrasena');
+    
+    if (control?.hasError('required')) {
+      return 'La contraseña no puede estar vacía.';
+    } else if (control?.hasError('minlength')) {
+      return 'La contraseña debe tener al menos 6 caracteres.';
+    } else if (control?.hasError('maxlength')) {
+      return 'La contraseña no puede tener más de 9 caracteres.';
+    }
+    
+    return '';
+  }
+
+  arePasswordsDifferent() {
+    const password = this.editUserForm.get('contrasena')?.value;
+    const confirmPassword = this.editUserForm.get('confirmar_contrasena')?.value;
+    return password && confirmPassword && password !== confirmPassword;
+  }
+
+  getConfirmPasswordError() {
+    return 'Las contraseñas no coinciden.';
+  }
+
+  async presentToast(mensaje: string, color: string = 'success') {
     const toast = await this.toastController.create({
-      position: position,
-      message: texto,
-      duration: 2000,
+      message: mensaje,
+      duration: 5000, // Duración del Toast (2 segundos)
+      position: 'bottom', // Mostrar en la parte inferior
+      color: color
     });
-
     await toast.present();
   }
 }

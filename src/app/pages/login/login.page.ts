@@ -36,7 +36,7 @@ export class LoginPage implements OnInit {
         if (correo) {
           const usuarios = correo;
           // Guardar el rol del usuario en localStorage
-          localStorage.setItem('id_usuario', usuarios.id_usuario.toString());  // Aquí guardas el ID del usuario
+          localStorage.setItem('id_usuario', usuarios.id_usuario.toString());
           localStorage.setItem('id_rol', usuarios.id_rol);
           localStorage.setItem('nombre', usuarios.nombre);
   
@@ -49,7 +49,6 @@ export class LoginPage implements OnInit {
       })
       .catch(e => console.error('Error en el login', e));
   }
-  
 }
   
 

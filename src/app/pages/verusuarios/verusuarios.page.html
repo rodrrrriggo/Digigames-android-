@@ -1,13 +1,52 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>verusuarios</ion-title>
+  <ion-toolbar color="warning">
+          <ion-buttons slot="start">
+            <ion-back-button default-href="'/catalogo'"></ion-back-button>
+          </ion-buttons>
+    <ion-title>
+      Lista de usuarios
+      </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">verusuarios</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  
+  <br />
+  <ion-card-title>
+    <img src="assets/img/logo1.png" alt="Logo DIGIGAMES" style="height: 90px; vertical-align: middle;">
+  </ion-card-title>
+
+    <ion-card class="card1">
+    <h1>Lista de usuarios</h1>
+    <p>Bienvenido, aca abajo tienes una lista de todos los usuarios registrados con sus respectivos datos.
+      <br />
+      (Recuerda que no mostramos datos sensibles,
+      <br />
+      como por ejemplo; contraseñas y/o tarjetas de debitos asociadas. )
+      <br />
+    </p>
+    <br />
+  </ion-card>
+
+  <ion-card class="card1">
+    <ion-list>
+      <ion-item *ngFor="let usuario of usuarios">
+        <ion-label>
+          <h2> Nombre del usuario: {{ usuario.nombre }}</h2>
+          <p> Correo del usuario: {{ usuario.correo }}</p>
+          <p> Telefono del usuario: {{ usuario.telefono }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
 </ion-content>
+
+<ion-footer translucent="true">
+  <ion-tab-bar color="warning" slot="bottom">
+    <ion-title>
+      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 50px;">
+      </ion-title>
+  </ion-tab-bar>
+</ion-footer>

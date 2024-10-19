@@ -39,8 +39,8 @@
                 <p color="warning" *ngIf="isTelefonoInvalid()">{{ getTelefonoError() }}</p>
                 <br />
         
-                  <ion-button color="success" type="submit" [disabled]="editUserForm.invalid">
-                    Guardar cambios
+                  <ion-button type="submit" [disabled]="editUserForm.invalid">
+                    Modificar
                   </ion-button>
               </ion-list>
             </form>
