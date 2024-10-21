@@ -288,6 +288,22 @@ export class ServiceBDService {
   }
 
 
+  getUsuarioByCorreo(correo: string): Promise<Usuario | null> {
+    const query = 'SELECT * FROM usuarios WHERE correo = ?';
+    return this.database.executeSql(query, [correo]).then((result) => {
+      if (result.rows.length > 0) {
+        const user = result.rows.item(0) as Usuario;
+        return user;
+      }
+      return null;
+    }).catch(error => {
+      console.error('Error al buscar el usuario por correo', error);
+      return null;
+    });
+  }
+
+
+
   async presentToast(mensaje: string, color: string = 'success') {
     const toast = await this.toastController.create({
       message: mensaje,
