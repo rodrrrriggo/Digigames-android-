@@ -23,7 +23,7 @@ arregloJuegos = [{
   ngOnInit() {
 
 
-    this.rolUsuario = localStorage.getItem('id_rol'); // admin o cliente
+    this.rolUsuario = localStorage.getItem('id_rol');
 
     this.bd.dbState().subscribe(res=>{
       if(res){

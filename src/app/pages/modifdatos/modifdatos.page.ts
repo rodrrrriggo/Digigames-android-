@@ -23,18 +23,17 @@ export class ModifdatosPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Crear el formulario con los validadores
+
     this.editUserForm = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]*$')]],
       correo: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$')]], // Validación para números
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$')]], 
     });
 
-  // Obtener el ID del usuario desde localStorage
   const userId = parseInt(localStorage.getItem('id_usuario') || '0', 10);
 
   if (userId > 0) {
-    // Obtener los datos del usuario y rellenar el formulario
+
     this.serviceBD.getUsuarioById(userId).subscribe((usuario) => {
       this.currentUser = usuario;
       this.editUserForm.patchValue({
@@ -45,8 +44,7 @@ export class ModifdatosPage implements OnInit {
     });
   } else {
     console.error('ID de usuario no válido');
-    // Aquí puedes redirigir al usuario a la página de login o mostrar un mensaje
-    this.navCtrl.navigateBack('/login'); // Redirigir si el ID no es válido
+    this.navCtrl.navigateBack('/login'); 
   }
 }
 
@@ -107,8 +105,8 @@ export class ModifdatosPage implements OnInit {
   async presentToast(mensaje: string, color: string = 'success') {
     const toast = await this.toastController.create({
       message: mensaje,
-      duration: 3000, // Duración del Toast (2 segundos)
-      position: 'bottom', // Mostrar en la parte inferior
+      duration: 3000, 
+      position: 'bottom',
       color: color
     });
     await toast.present();
