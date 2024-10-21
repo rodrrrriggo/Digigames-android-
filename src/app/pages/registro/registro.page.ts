@@ -23,7 +23,7 @@ export class RegistroPage implements OnInit {
     this.form = this.formbuilder.group({
       nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]],
       correo: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required]],
+      telefono: ['', [ Validators.maxLength(9), Validators.minLength(9)]],
       contrasena: ['', [
         Validators.required,
         Validators.minLength(8),
@@ -76,7 +76,13 @@ export class RegistroPage implements OnInit {
     getTelefonoError() {
       const control = this.form.get('telefono');
       if (control?.hasError('required')) {
-        return 'El telefono no puede estar vacío.';
+        return 'El teléfono no puede estar vacío.';
+      }
+      if (control?.hasError('minlength')) {
+        return 'El teléfono debe tener 9 dígitos.';
+      }
+      if (control?.hasError('maxlength')) {
+        return 'El teléfono no puede tener más de 9 dígitos.';
       }
       return '';
     }
@@ -107,9 +113,9 @@ export class RegistroPage implements OnInit {
       if (control?.hasError('required')) {
         return 'La contraseña no puede estar vacía.';
       } else if (control?.hasError('minlength')) {
-        return 'La contraseña debe tener al menos 8 caracteres.';
-      } else if (control?.hasError('invalidPassword')) {
-        return 'La contraseña debe contener letras, números y símbolos.';
+        return 'La contraseña debe tener al menos 6 caracteres.';
+      } else if (control?.hasError('maxlength')) {
+        return 'La contraseña no puede tener más de 9 caracteres.';
       }
       return '';
     }

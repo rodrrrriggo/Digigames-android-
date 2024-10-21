@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { ServiceBDService } from 'src/app/services/service-bd.service';
 
 @Component({
   selector: 'app-modifcontra',
@@ -9,47 +10,44 @@ import { AlertController, ToastController } from '@ionic/angular';
 })
 export class ModifcontraPage implements OnInit {
 
-  correo: string = "";
+  correo: string = '';
+  errorCorreo: string = '';
 
-  constructor(private alertController: AlertController, private toastController: ToastController, private router: Router) { }
+  constructor(private alertController: AlertController, private toastController: ToastController, private router: Router, private bd: ServiceBDService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'DIGIGAMES DICE:',
-      message: 'Listo, revisa tu bandeja de correo para poder cambiar tu contraseña.',
-      buttons: ['Comenzar'],
+  async verificarCorreo() {
+    if (!this.correo || !this.isEmailValid(this.correo)) {
+      this.errorCorreo = 'Por favor ingresa un correo válido.';
+      return;
+    }
+
+    // Verificar si el correo está en la base de datos
+    this.bd.getUsuarioPorCorreo(this.correo).then(usuario => {
+      if (usuario) {
+        this.router.navigate(['/cambiocontra'], { state: { correo: this.correo } });
+      } else {
+        this.presentToast('El correo no está registrado.');
+      }
     });
-
-    await alert.present();
   }
 
-  async modifcontrasena() {
-    if (this.correo === "") {
-      await this.presentToast('middle', 'Campo vacio.');
-      return;
-    }
-
-    if (!this.correo.includes("@")) {
-      await this.presentToast('middle', 'Por favor, ingresa un correo electrónico válido.');
-      return;
-    }
-      
-    await this.presentAlert();
-    this.router.navigate(['/login']);
+  // Validación simple de correo electrónico
+  isEmailValid(email: string): boolean {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   }
 
-  async presentToast(position: 'middle', texto: string) {
+  async presentToast(message: string) {
     const toast = await this.toastController.create({
-      position: position,
-      message: texto,
+      message: message,
       duration: 2000,
+      position: 'bottom'
     });
-
-    await toast.present();
+    toast.present();
   }
 
 }
+  
 

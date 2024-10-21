@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SQLite,SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Juego } from '../models/juego';
 import { Usuario } from '../models/usuario';
@@ -56,7 +56,7 @@ export class ServiceBDService {
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private usuarioBD = new BehaviorSubject<Users | null>(null);
 
-  constructor(private sqlite: SQLite, private platform: Platform, private alertController: AlertController) {
+  constructor(private sqlite: SQLite, private platform: Platform, private alertController: AlertController, private toastController: ToastController) {
     this.crearBD()
    }
 
@@ -202,12 +202,12 @@ export class ServiceBDService {
           const users: Users = new Users(
             res.rows.item(0).id_usuario,
             res.rows.item(0).nombre,
-            res.rows.item(0).telefono,    // Asegúrate de que este campo exista en tu tabla 'usuarios'
+            res.rows.item(0).telefono,   
             res.rows.item(0).correo,
-            res.rows.item(0).contrasena,  // Asegúrate de que este campo exista si lo necesitas
+            res.rows.item(0).contrasena,  
             res.rows.item(0).id_rol
           );
-          this.usuarioBD.next(users);  // Actualiza el observable con los datos del usuario
+          this.usuarioBD.next(users); 
         }
       })
       .catch(err => {
@@ -235,36 +235,36 @@ export class ServiceBDService {
 
   insertarJuego(nombre_producto: string, precio: number, foto_producto: Blob){
     return this.database.executeSql('INSERT INTO Productos(foto_producto, nombre_producto, precio) VALUES (?,?,?)',[foto_producto,nombre_producto,precio,]).then((res)=>{
-      this.presentAlert("Agregar", "Juego agregado exitosamente al catalogo!");
+      this.presentToast("Juego agregado exitosamente al catalogo");
       this.getJuego();
     }).catch(e=>{
-      this.presentAlert('Agregar','Error: ' + JSON.stringify(e));
+      this.presentToast('Agregar','Error: ' + JSON.stringify(e));
     })
   }
 
   eliminarProducto(id_producto : string){
     return this.database.executeSql('DELETE FROM productos WHERE id_producto = ?', [id_producto]).then((res)=>{
-      this.presentAlert("Eliminar","Juego eliminado correctamente del catalogo!");
+      this.presentToast("Juego eliminado correctamente del catalogo");
       this.getJuego();
     }).catch(e=>{
-      this.presentAlert('Eliminar', 'Error : ' +JSON.stringify(e));
+      this.presentToast('Eliminar', 'Error : ' +JSON.stringify(e));
     })
   }
 
   editarProducto(id_producto: string, nombre_producto: string,precio: number, foto_producto: Blob ){
     return this.database.executeSql('UPDATE Productos SET nombre_producto = ?, precio = ?, foto_producto = ? WHERE id_producto = ?',[nombre_producto,precio,foto_producto,id_producto]).then((res)=>{
-      this.presentAlert("Modificar", "Juego modificado de manera correcta!");
+      this.presentToast("Juego modificado de manera correcta");
       this.getJuego();
     }).catch(e=>{
-      this.presentAlert('Modificar','Error: ' + JSON.stringify(e));
+      this.presentToast('Modificar','Error: ' + JSON.stringify(e));
     })
   }
 
   insertarUsuario(nombre: string, correo: string, telefono: string, contrasena: string, id_rol: number){
     return this.database.executeSql('INSERT INTO usuarios (nombre, correo, telefono, contrasena, id_rol) VALUES (?, ?, ?, ?, ?);',[nombre,correo,telefono,contrasena,id_rol]).then((res)=>{
-      this.presentAlert("Agregar", "Usuario agregado exitosamente!");
+      this.presentToast("Te has registrado exitosamente");
     }).catch(e=>{
-      this.presentAlert('agregar','Error: ' + JSON.stringify(e));
+      this.presentToast('agregar','Error: ' + JSON.stringify(e));
     })
     
   }
@@ -273,7 +273,7 @@ export class ServiceBDService {
     const query = `UPDATE usuarios SET nombre = ?, correo = ?, telefono = ? WHERE id_usuario = ?`;
     return this.database.executeSql(query, [nombre, correo, telefono, id_usuario]).then(() => {
     }).catch(e => {
-      this.presentAlert('Error', 'Error al modificar los datos del usuario: ' + JSON.stringify(e));
+      this.presentToast('Error', 'Error al modificar los datos del usuario: ' + JSON.stringify(e));
     });
   }
 
@@ -281,14 +281,23 @@ export class ServiceBDService {
     const query = `UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?`;
     return this.database.executeSql(query, [contrasena, id_usuario])
       .then(() => {
-        // Mensaje opcional
       })
       .catch(e => {
-        this.presentAlert('Error', 'Error al modificar la contraseña del usuario: ' + JSON.stringify(e));
+        this.presentToast('Error', 'Error al modificar la contraseña del usuario: ' + JSON.stringify(e));
       });
   }
 
 
+  async presentToast(mensaje: string, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 3000,
+      position: 'bottom', 
+      color: color
+    });
+    await toast.present();
+  }
 }
+
 
 
