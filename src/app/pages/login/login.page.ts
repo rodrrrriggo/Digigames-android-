@@ -17,14 +17,13 @@ export class LoginPage implements OnInit {
   constructor(private bd: ServiceBDService, public alertcontroller: AlertController, private navcontroller: NavController, ) {}
 
   ngOnInit() {
- // Limpiar LocalStorage en la primera carga de la app
+
     localStorage.clear();
-    // Verificar si hay un usuario logueado al iniciar la aplicación
+ 
     const correo = localStorage.getItem('correo');
-    this.rolUsuario = localStorage.getItem('id_rol'); // Aquí se obtiene el rol del usuario desde localStorage
+    this.rolUsuario = localStorage.getItem('id_rol'); 
 
     if (correo) {
-      // Redirigir a la página de productos si hay un usuario logueado
       this.navcontroller.navigateForward('/vistaadmin');
     }
   }
@@ -35,12 +34,10 @@ export class LoginPage implements OnInit {
       .then((correo) => {
         if (correo) {
           const usuarios = correo;
-          // Guardar el rol del usuario en localStorage
           localStorage.setItem('id_usuario', usuarios.id_usuario.toString());
           localStorage.setItem('id_rol', usuarios.id_rol);
           localStorage.setItem('nombre', usuarios.nombre);
   
-          // Redirigir a la página home si el login es exitoso
           this.navcontroller.navigateForward('/vistaadmin');
           alert('Bienvenido a DIGIGAMES!');
         } else {

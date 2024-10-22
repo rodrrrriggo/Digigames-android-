@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+    </ion-buttons>
+    <ion-title>Preparate!</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+
+
+  <div id="container">
+    <h1>Preparate para Comprar Rick and Morty: Virtual Rick-ality en DIGIGAMES!</h1>
+    <p> Rick and Morty: Virtual Rick-ality llega a DIGIGAMES y podras adquirirlo a partir del 23/10!</p>
+    <h2>CON PERSONAJES COMO:</h2>
+
+  <ion-card>
+
+  <ion-item *ngFor="let x of characters" >
+
+
+    <ion-avatar slot="start">
+      <img src="{{x.image}}" />
+    </ion-avatar>
+    <ion-label>{{x.name}}</ion-label>
+
+    <ion-label>{{x.status}}</ion-label>
+
+    <ion-label>{{x.species}}</ion-label>
+    
+
+
+  </ion-item>
+</ion-card>
+<ion-button routerLink="/login" color="warning" click="presentAlert()">CONTINUAR</ion-button>
+</div>
+
+
+
+
+</ion-content>
+
+
+<ion-footer translucent="true">
+  <ion-tab-bar color="success" slot="bottom">
+    <ion-title>
+      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 50px;">
+      </ion-title>
+  </ion-tab-bar>
+</ion-footer>

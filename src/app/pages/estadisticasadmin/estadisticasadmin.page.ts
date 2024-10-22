@@ -22,20 +22,20 @@ export class EstadisticasadminPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cargarDatosUsuario();  // Carga los datos del usuario cuando la página se inicializa
+    this.cargarDatosUsuario();  
   }
 
-  // Método para cargar los datos del usuario desde el servicio
+
   cargarDatosUsuario() {
     const id_usuario = Number(localStorage.getItem('id_usuario'));
     
-    // Verificar si se obtiene el ID del usuario correctamente
+  
     if (id_usuario) {
       this.serviceBD.getUsuarioById(id_usuario).subscribe(
         (usuario: Usuario) => {
-          // Asignar los datos del usuario obtenidos desde la base de datos
+        
           this.usuario = usuario;
-          this.nombre = usuario.nombre || '';  // Asigna el nombre del usuario
+          this.nombre = usuario.nombre || '';  
         },
         (error) => {
           console.error('Error al cargar los datos del usuario:', error);

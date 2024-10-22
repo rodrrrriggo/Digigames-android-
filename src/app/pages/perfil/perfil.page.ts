@@ -11,7 +11,7 @@ import { ServiceBDService } from 'src/app/services/service-bd.service';
 })
 export class PerfilPage implements OnInit {
 
-  // Variables para manejar los datos del perfil del usuario
+
   nombre: string = '';  
   correo: string = '';  
   contrasena: string = '';
@@ -27,22 +27,22 @@ export class PerfilPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cargarDatosUsuario();  // Carga los datos del usuario cuando la página se inicializa
+    this.cargarDatosUsuario(); 
   }
 
-  // Método para cargar los datos del usuario desde el servicio
+
   cargarDatosUsuario() {
     const id_usuario = Number(localStorage.getItem('id_usuario'));
     
-    // Verificar si se obtiene el ID del usuario correctamente
+
     if (id_usuario) {
       this.serviceBD.getUsuarioById(id_usuario).subscribe(
         (usuario: Usuario) => {
-          // Asignar los datos del usuario obtenidos desde la base de datos
+     
           this.usuario = usuario;
-          this.nombre = usuario.nombre || '';  // Asigna el nombre del usuario
-          this.telefono = usuario.telefono || '';  // Asigna el telefono del usuario
-          this.correo = usuario.correo || '';  // Asigna el correo del usuario
+          this.nombre = usuario.nombre || '';  
+          this.telefono = usuario.telefono || '';  
+          this.correo = usuario.correo || ''; 
         },
         (error) => {
           console.error('Error al cargar los datos del usuario:', error);
@@ -55,19 +55,18 @@ export class PerfilPage implements OnInit {
     }
   }
 
-  // Método para manejar la actualización de los datos del perfil del usuario
+
   async ingresoUsuarios() {
-    // Aquí puedes agregar la lógica para modificar el perfil del usuario
-    // Validar y enviar los datos modificados al servicio para que actualice la información en la base de datos
+
+
     if (this.usuario) {
-      // Lógica de actualización de datos
+ 
       console.log('Actualizar perfil:', this.nombre, this.correo);
     } else {
       console.error('No hay usuario cargado para modificar.');
     }
   }
 
-  // Método para mostrar mensajes Toast
   async presentToast(position: 'middle', texto: string) {
     const toast = await this.toastController.create({
       position: position,

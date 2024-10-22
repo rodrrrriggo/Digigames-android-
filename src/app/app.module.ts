@@ -10,12 +10,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { SQLite,} from '@awesome-cordova-plugins/sqlite/ngx';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import {MatIconModule} from '@angular/material/icon'
+import {MatIconModule} from '@angular/material/icon';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, MatIconModule, ReactiveFormsModule],
+  imports: [ BrowserModule, IonicModule.forRoot(), AppRoutingModule, MatIconModule, ReactiveFormsModule, HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, provideAnimationsAsync() ], 
   bootstrap: [AppComponent],
 })

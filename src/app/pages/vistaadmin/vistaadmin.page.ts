@@ -34,7 +34,24 @@ arregloJuegos = [{
     })
   }
 
-  
+ async comprar(x: any) {
+      const alert = await this.alertController.create({
+        header: 'Confirmar Compra',
+        message: `¿Estás seguro de que deseas agregar ${x.nombre_producto} a tu carrito por ${x.precio}?`,
+        buttons: [{
+            text: 'Cancelar',
+            role: 'cancel'}, {
+            text: 'Confirmar',
+            handler: () => {
+              console.log('Compra confirmada:', x);
+              this.router.navigate(['/carrito']);
+            }
+          }
+        ]
+      });
+    
+      await alert.present();
+    }
 
   async presentAlert() {
     const alert = await this.alertController.create({

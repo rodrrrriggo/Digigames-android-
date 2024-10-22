@@ -13,8 +13,8 @@ export class HomePage {
   async presentAlert() {
     const alert = await this.alertController.create({
       header: 'DIGIGAMES DICE:',
-      message: 'Bienvenido',
-      buttons: ['Comenzar'],
+      message: 'Preparate para jugar Rick and Morty: Virtual Rick-ality en DIGIGAMES!',
+      buttons: ['Continuar'],
     });
 
     await alert.present();

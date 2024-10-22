@@ -23,7 +23,8 @@
     <ion-button *ngIf="rolUsuario ==='1'" color="success" (click)="editar(x)">Editar</ion-button>
     <ion-button *ngIf="rolUsuario ==='1'" color="danger" (click)="eliminar(x)">Eliminar</ion-button>
 
-    <ion-button *ngIf="rolUsuario === '2'" color="primary">Comprar</ion-button>
+    <ion-button *ngIf="rolUsuario === '2'" color="primary" (click)="comprar(x)">Comprar</ion-button>
+
 
       <div class="icon-container">
         <ion-card-title>Disponible en:</ion-card-title>

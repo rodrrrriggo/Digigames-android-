@@ -76,9 +76,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modifdatos/modifdatos.module').then( m => m.ModifdatosPageModule)
   },
   {
+    path: 'probarapi',
+    loadChildren: () => import('./pages/probarapi/probarapi.module').then( m => m.ProbarapiPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/notfound/notfound.module').then( m => m.NotfoundPageModule)
   },
+
+
   
 
   

@@ -28,14 +28,12 @@ export class ModifcontraPage implements OnInit {
       return;
     }
 
-    // Buscar el usuario por correo
+
     const usuario = await this.serviceBD.getUsuarioByCorreo(this.correo);
     
     if (usuario) {
-      // Guardar el ID del usuario en localStorage
       localStorage.setItem('id_usuario', usuario.id_usuario.toString());
       
-      // Redirigir a la página de cambio de contraseña
       this.router.navigate(['/cambiocontra']);
     } else {
       await this.presentToast('middle', 'No se encontró un usuario con este correo.');

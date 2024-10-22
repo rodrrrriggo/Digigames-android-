@@ -302,8 +302,6 @@ export class ServiceBDService {
     });
   }
 
-
-
   async presentToast(mensaje: string, color: string = 'success') {
     const toast = await this.toastController.create({
       message: mensaje,
