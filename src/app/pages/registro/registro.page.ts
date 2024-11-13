@@ -29,7 +29,9 @@ export class RegistroPage implements OnInit {
         Validators.minLength(8),
         this.passwordValidator
       ]],
-      confirmar_contrasena: ['', [Validators.required]]
+      confirmar_contrasena: ['', [Validators.required]],
+      preguntaSeguridad: ['', Validators.required],
+      respuestaSeguridad: ['', Validators.required]
     });
   }
 
@@ -44,11 +46,20 @@ export class RegistroPage implements OnInit {
       return valid ? null : { invalidPassword: true };
     }
 
+    isPreguntaSeguridadInvalid() {
+      const control = this.form.get('preguntaSeguridad');
+      return control?.touched && control.invalid;
+    }
+    
+    isRespuestaSeguridadInvalid() {
+      const control = this.form.get('respuestaSeguridad');
+      return control?.touched && control.invalid;
+    }
 
     crear() {
       if (this.form.valid) {
-        const { nombre, correo, telefono, contrasena } = this.form.value;
-        this.bd.insertarUsuario(nombre,correo,telefono,contrasena,this.id_rol);
+        const { nombre, correo, telefono, contrasena, preguntaSeguridad, respuestaSeguridad } = this.form.value;
+        this.bd.insertarUsuario(nombre, correo, telefono, contrasena, this.id_rol, preguntaSeguridad, respuestaSeguridad);
         this.router.navigate(['/login']);
       }
     }

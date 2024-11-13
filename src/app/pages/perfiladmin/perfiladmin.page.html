@@ -1,47 +1,50 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="warning">
-          <ion-buttons slot="start">
-            <ion-back-button default-href="'/catalogo'"></ion-back-button>
-          </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/catalogo"></ion-back-button>
+    </ion-buttons>
     <ion-title>
-      Perfil administrativo
-      </ion-title>
+      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 55px; margin-right: 50px;">
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-content [fullscreen]="true">
+  
+  <div id="container">
+    <ion-icon name="person"></ion-icon>
+    <ion-card color="warning">
+      <br />
+      <ion-title>Bienvenido/a: {{nombre}}</ion-title> <!-- Mostrar el nombre del usuario -->
+      <br />
+      <p>Aqui estan los datos de tu perfil</p>
+      <br />
+      
+      <!-- Mostrar el nombre del usuario (solo lectura) -->
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [readonly]="true" value="{{nombre}}" fill="outline"></ion-input>
+      <br />
 
-  <ion-content [fullscreen]="true">
-  
-    <div id="container">
-      <ion-icon name="person"></ion-icon>
-      <ion-card color="warning">
-        <br />
-        <ion-title>Bienvenido/a: {{nombre}}</ion-title> <!-- Mostrar el nombre del usuario -->
-        <br />
-        <p>Aqui estan los datos de tu perfil</p>
-        <br />
-        
-        <!-- Mostrar el nombre del usuario (solo lectura) -->
-        <ion-label position="stacked">Nombre</ion-label>
-        <ion-input [readonly]="true" value="{{nombre}}" fill="outline"></ion-input>
-        <br />
-  
-        <!-- Mostrar el correo del usuario (solo lectura) -->
-        <ion-label position="stacked">Correo electrónico</ion-label>
-        <ion-input [readonly]="true" type="email" value="{{correo}}" fill="outline"></ion-input>
-        <br />
-  
-        <ion-label position="stacked">Telefono</ion-label>
-        <ion-input [readonly]="true" type="number" value="{{telefono}}" fill="outline"></ion-input>
-        <br />
-      </ion-card>
-    </div>
-  </ion-content>
+      <!-- Mostrar el correo del usuario (solo lectura) -->
+      <ion-label position="stacked">Correo electrónico</ion-label>
+      <ion-input [readonly]="true" type="email" value="{{correo}}" fill="outline"></ion-input>
+      <br />
+
+      <ion-label position="stacked">Telefono</ion-label>
+      <ion-input [readonly]="true" type="number" value="{{telefono}}" fill="outline"></ion-input>
+      <br />
+      
+      <p>Modifica tu contraseña <a [routerLink]="['/cambiocontra']">Cambiar contraseña</a> </p>
+      <br />
+      <!-- Botón para confirmar la modificación -->
+       <p>¿Necesitas actualizar tus datos? <a [routerLink]="['/modifdatos']">Modificar tus datos</a> </p> 
+      <br />
+    </ion-card>
+  </div>
+</ion-content>
 
 <ion-footer translucent="true">
   <ion-tab-bar color="warning" slot="bottom">
-    <ion-title>
-      <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 50px;">
-      </ion-title>
+    <!-- Puedes añadir iconos u opciones del menú aquí -->
   </ion-tab-bar>
 </ion-footer>

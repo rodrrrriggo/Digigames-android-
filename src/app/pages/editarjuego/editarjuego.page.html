@@ -1,37 +1,41 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="warning">
     <ion-buttons slot="start">
-      <ion-back-button default-href="'/catalogo'"></ion-back-button>
+      <ion-back-button default-href="/catalogo"></ion-back-button>
     </ion-buttons>
     <ion-title>Agregar Juegos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-
-
 <ion-content [fullscreen]="true"> 
   <h1>Hora de modificar!</h1>
   <div id="container">
     <ion-card color="warning"> 
-      <br />
       <ion-title>
         EDITAR JUEGO
         <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 30px; vertical-align: middle;">
       </ion-title>
-      <br />
-      <!-- Input para seleccionar la imagen -->
-      <ion-button (click)="takePicture()">Elegir Imagen</ion-button><br>
-      <img *ngIf="foto_producto" [src]="foto_producto" alt="Sin imagen" style="height: 250px;width: 250px;" [(ngModel)]="foto_producto"/>
       
-      <br />
-      <ion-input label="Nombre del juego" label-placement="floating" fill="outline" placeholder="Escoge el nombre del juego" [(ngModel)]="JuegoMod.nombre_producto" ></ion-input>
-      <br />
-      <ion-input type="number" label="Precio" label-placement="floating" fill="outline" placeholder="Precio del juego" [(ngModel)]="JuegoMod.precio" ></ion-input>
-      <br />
-      <ion-button (click)="editar()">MODIFICAR</ion-button>
-      <br />
+      <!-- Botón para seleccionar la imagen -->
+      <ion-button (click)="takePicture()">Elegir Imagen</ion-button>
+      <br>
+      
+      <!-- Imagen previa del juego (si existe) -->
+      <img *ngIf="foto_producto" [src]="foto_producto" alt="Sin imagen" style="height: 250px;width: 250px;"/>
+      
+      <!-- Campo de entrada para el nombre del juego -->
+      <ion-input label="Nombre del juego" label-placement="floating" fill="outline" 
+                 placeholder="Escoge el nombre del juego" [(ngModel)]="JuegoMod.nombre_producto">
+      </ion-input>
+      
+      <!-- Campo de entrada para el precio -->
+      <ion-input type="number" label="Precio" label-placement="floating" fill="outline" 
+                 placeholder="Precio del juego" [(ngModel)]="JuegoMod.precio">
+      </ion-input>
+      
+      <!-- Botón para modificar el juego, deshabilitado si los campos están vacíos o el precio es negativo -->
+      <ion-button [disabled]="!isFormValid()" (click)="editar()">MODIFICAR</ion-button>
     </ion-card>
-
   </div>
 </ion-content>
 
@@ -39,6 +43,6 @@
   <ion-tab-bar color="warning" slot="bottom">
     <ion-title>
       <img src="assets/img/logo1-negro.png" alt="Logo DIGIGAMES" style="height: 50px;">
-      </ion-title>
+    </ion-title>
   </ion-tab-bar>
 </ion-footer>

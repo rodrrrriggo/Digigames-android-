@@ -10,30 +10,42 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 })
 export class EditarjuegoPage implements OnInit {
 
-JuegoMod: any;
-foto_producto: any;
+  JuegoMod: any;
+  foto_producto: any;
 
   constructor(private bd: ServiceBDService, private router: Router, private activerouter: ActivatedRoute) {
-    
-
-    this.activerouter.queryParams.subscribe(res=>{
-      if(this.router.getCurrentNavigation()?.extras.state){
+    this.activerouter.queryParams.subscribe(res => {
+      if (this.router.getCurrentNavigation()?.extras.state) {
         this.JuegoMod = this.router.getCurrentNavigation()?.extras?.state?.['Productos'];
+        // Mantener la imagen existente si ya está definida
+        this.foto_producto = this.JuegoMod?.foto_producto || 'ruta/imagen/por/defecto.png'; 
       }
-    })
-
-
+    });
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  // Validar el formulario
+  isFormValid(): boolean {
+    return this.JuegoMod.nombre_producto && this.JuegoMod.precio > 0;
   }
 
-
-  editar(){
-    this.bd.editarProducto(this.JuegoMod.id_producto, this.JuegoMod.nombre_producto, this.JuegoMod.precio, this.foto_producto);
-    this.router.navigate(['/vistaadmin']);
+  // Función para editar el juego
+  editar() {
+    if (this.isFormValid()) {
+      this.bd.editarProducto(
+        this.JuegoMod.id_producto, 
+        this.JuegoMod.nombre_producto, 
+        this.JuegoMod.precio, 
+        this.foto_producto
+      );
+      this.router.navigate(['/vistaadmin']);
+    } else {
+      console.log('Por favor completa todos los campos correctamente');
+    }
   }
-  
+
+  // Función para seleccionar una imagen con la cámara
   takePicture = async () => {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -41,13 +53,9 @@ foto_producto: any;
       resultType: CameraResultType.Uri
     });
 
-    // image.webPath will contain a path that can be set as an image src.
-    // You can access the original file using image.path, which can be
-    // passed to the Filesystem API to read the raw data of the image,
-    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-    this.foto_producto = image.webPath;
-
-
+    // Si se selecciona una nueva imagen, actualizar `foto_producto`
+    if (image?.webPath) {
+      this.foto_producto = image.webPath;
+    }
   };
-
 }

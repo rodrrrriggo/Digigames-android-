@@ -11,9 +11,12 @@ import { ServiceBDService } from 'src/app/services/service-bd.service';
 })
 export class PerfiladminPage implements OnInit {
 
+
   nombre: string = '';  
-  correo: string = ''; 
-  telefono: string = ''; 
+  correo: string = '';  
+  contrasena: string = '';
+  telefono: string = '';
+  confirmarContrasena: string = '';
   usuario: Usuario | null = null;
 
   constructor(
@@ -27,7 +30,7 @@ export class PerfiladminPage implements OnInit {
     this.cargarDatosUsuario(); 
   }
 
- 
+
   cargarDatosUsuario() {
     const id_usuario = Number(localStorage.getItem('id_usuario'));
     
@@ -35,10 +38,11 @@ export class PerfiladminPage implements OnInit {
     if (id_usuario) {
       this.serviceBD.getUsuarioById(id_usuario).subscribe(
         (usuario: Usuario) => {
+     
           this.usuario = usuario;
-          this.correo = usuario.correo || '';
-          this.telefono = usuario.telefono || '';
           this.nombre = usuario.nombre || '';  
+          this.telefono = usuario.telefono || '';  
+          this.correo = usuario.correo || ''; 
         },
         (error) => {
           console.error('Error al cargar los datos del usuario:', error);
@@ -48,6 +52,18 @@ export class PerfiladminPage implements OnInit {
     } else {
       console.error('No se encontró un ID de usuario en el localStorage.');
       this.presentToast('middle', 'No se encontró un ID de usuario.');
+    }
+  }
+
+
+  async ingresoUsuarios() {
+
+
+    if (this.usuario) {
+ 
+      console.log('Actualizar perfil:', this.nombre, this.correo);
+    } else {
+      console.error('No hay usuario cargado para modificar.');
     }
   }
 

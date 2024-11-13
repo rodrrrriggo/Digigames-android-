@@ -11,15 +11,27 @@ import { ServiceBDService } from 'src/app/services/service-bd.service';
 export class ModifcontraPage implements OnInit {
 
   correo: string = "";
+  respuestaSeguridad: string = '';
 
   constructor(private alertController: AlertController, private toastController: ToastController, private router: Router, private serviceBD: ServiceBDService) { }
+
 
   ngOnInit() {
   }
 
+  async verificarRespuesta() {
+    const usuario = await this.serviceBD.getUsuarioByCorreo(this.correo);
+    if (usuario && usuario.respuestaSeguridad === this.respuestaSeguridad) {
+      localStorage.setItem('id_usuario', usuario.id_usuario.toString());
+      this.router.navigate(['/cambiocontra']);
+    } else {
+      await this.presentToast('middle', 'Alguno de los campos estan vacios o con datos erroneos.');
+    }
+  }
+
   async modifcontrasena() {
     if (this.correo === "") {
-      await this.presentToast('middle', 'El campo de correo no puede estar vacío.');
+    await this.presentToast('middle', 'El campo de correo no puede estar vacío.');
       return;
     }
 

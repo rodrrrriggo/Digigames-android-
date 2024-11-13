@@ -42,6 +42,21 @@
                   </ion-input>
                   <p *ngIf="arePasswordsDifferent()">{{ getConfirmPasswordError() }}</p>
               <br />
+
+              <ion-select label="Pregunta de Seguridad" label-placement="floating" fill="outline" formControlName="preguntaSeguridad" placeholder="Elige una pregunta">
+                <ion-select-option value="nombreMascota">¿Cuál es el nombre de tu mascota?</ion-select-option>
+                <ion-select-option value="escuelaPrimaria">¿Cuál fue el nombre de tu escuela primaria?</ion-select-option>
+                <ion-select-option value="lugarNacimiento">¿En qué ciudad naciste?</ion-select-option>
+                <ion-select-option value="numeroFavorito">¿Cual es tu numero favorito?</ion-select-option>
+              </ion-select>
+              <p *ngIf="isPreguntaSeguridadInvalid()">Debe seleccionar una pregunta de seguridad.</p>
+              <br />
+
+              <ion-input label="Respuesta de Seguridad" label-placement="floating" fill="outline" placeholder="Ingresa tu respuesta"
+                  formControlName="respuestaSeguridad" (ionBlur)="form.get('respuestaSeguridad')?.markAsTouched()"></ion-input>
+              <p *ngIf="isRespuestaSeguridadInvalid()">Debe proporcionar una respuesta.</p>
+              <br />
+
               <ion-button type="submit" [disabled]="form.invalid">Registrarte</ion-button>
 
               <ion-label>

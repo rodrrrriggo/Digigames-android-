@@ -13,26 +13,24 @@
   <ion-content padding class="background">
   
   <!-- <ion-row> -->
-  <ion-card *ngFor="let x of arregloJuegos"> 
-    <ion-img class="card-imagen" alt="#" src="{{x.foto_producto}}" />
-    <ion-card-header>
-      <ion-card-title>{{x.nombre_producto}}</ion-card-title>
-      <ion-card-subtitle>{{x.precio}}</ion-card-subtitle>
-      
-    </ion-card-header>
-    <ion-button *ngIf="rolUsuario ==='1'" color="success" (click)="editar(x)">Editar</ion-button>
-    <ion-button *ngIf="rolUsuario ==='1'" color="danger" (click)="eliminar(x)">Eliminar</ion-button>
-
-    <ion-button *ngIf="rolUsuario === '2'" color="primary" (click)="comprar(x)">Comprar</ion-button>
-
-
+    <ion-card *ngFor="let x of arregloJuegos"> 
+      <ion-img class="card-imagen" alt="#" src="{{x.foto_producto}}" />
+      <ion-card-header>
+        <ion-card-title>{{x.nombre_producto}}</ion-card-title>
+        <ion-card-subtitle>{{x.precio}}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-button *ngIf="rolUsuario ==='1'" color="success" (click)="editar(x)">Editar</ion-button>
+      <ion-button *ngIf="rolUsuario ==='1'" color="danger" (click)="eliminar(x)">Eliminar</ion-button>
+    
+      <ion-button *ngIf="rolUsuario === '2'" color="primary" (click)="comprar(x)">Comprar</ion-button>
+    
       <div class="icon-container">
         <ion-card-title>Disponible en:</ion-card-title>
         <ion-icon name="logo-steam"></ion-icon>
         <ion-icon name="logo-playstation"></ion-icon>
         <ion-icon name="logo-xbox"></ion-icon>
       </div>
-  </ion-card>
+    </ion-card>
 
 </ion-content>
 </ion-content>

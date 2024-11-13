@@ -47,5 +47,12 @@
     color: #ffd900;
   }
 
+  .card-imagen {
+    width: 100%;        /* Ajusta el ancho a 100% del contenedor */
+    height: 200px;      /* Establece una altura fija */
+    object-fit: cover;  /* Hace que la imagen se ajuste al contenedor sin deformarse */
+    object-position: center; /* Centra la imagen dentro de la tarjeta */
+  }
+
 
   

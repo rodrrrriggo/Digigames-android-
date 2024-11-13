@@ -26,7 +26,7 @@ export class ServiceBDService {
 
   //TABLAS CON FOREIGN KEY
 
-  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL , correo VARCHAR(50) NOT NULL UNIQUE, telefono VARCHAR(50) NOT NULL, contrasena VARCHAR(50) NOT NULL, id_rol INTEGER, FOREIGN KEY (id_rol) REFERENCES rol(id_rol))";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL , correo VARCHAR(50) NOT NULL UNIQUE, telefono VARCHAR(50) NOT NULL, contrasena VARCHAR(50) NOT NULL, id_rol INTEGER, preguntaSeguridad VARCHAR(100), respuestaSeguridad VARCHAR(100), FOREIGN KEY (id_rol) REFERENCES rol(id_rol))";
 
   tablaVenta: string = "CREATE TABLE IF NOT EXISTS venta(id_venta INTEGER PRIMARY KEY AUTOINCREMENT, cantidad_venta INTEGER, total_venta INTEGER, usuarios_id_usuarios INTEGER, FOREIGN KEY(usuarios_id_usuarios) REFERENCES usuarios(id_usuario)), estado_id_estado INTEGER, FOREIGN KEY(estado_id_estado) REFERENCES estado(id_estado))";
 
@@ -159,7 +159,9 @@ export class ServiceBDService {
             telefono: res.rows.item(i).telefono,
             correo: res.rows.item(i).correo,
             contrasena: res.rows.item(i).contrasena,
-            id_rol: res.rows.item(i).id_rol
+            id_rol: res.rows.item(i).id_rol,
+            preguntaSeguridad: res.rows.item(i).preguntaSeguridad,
+            respuestaSeguridad: res.rows.item(i).respuestaSeguridad
           });
         }
       }
@@ -181,7 +183,9 @@ export class ServiceBDService {
               correo: res.rows.item(0).correo,
               telefono: res.rows.item(0).telefono,
               contrasena: res.rows.item(0).contrasena,
-              id_rol: res.rows.item(0).id_rol
+              id_rol: res.rows.item(0).id_rol,
+              preguntaSeguridad: res.rows.item(0).preguntaSeguridad,
+              respuestaSeguridad: res.rows.item(0).respuestaSeguridad
             };
             observer.next(usuario);
             observer.complete();
@@ -260,8 +264,8 @@ export class ServiceBDService {
     })
   }
 
-  insertarUsuario(nombre: string, correo: string, telefono: string, contrasena: string, id_rol: number){
-    return this.database.executeSql('INSERT INTO usuarios (nombre, correo, telefono, contrasena, id_rol) VALUES (?, ?, ?, ?, ?);',[nombre,correo,telefono,contrasena,id_rol]).then((res)=>{
+  insertarUsuario(nombre: string, correo: string, telefono: string, contrasena: string, id_rol: number, preguntaSeguridad: string, respuestaSeguridad: string) {
+    return this.database.executeSql('INSERT INTO usuarios (nombre, correo, telefono, contrasena, id_rol, preguntaSeguridad, respuestaSeguridad) VALUES (?, ?, ?, ?, ?, ?, ?);',[nombre,correo,telefono,contrasena,id_rol,preguntaSeguridad,respuestaSeguridad]).then((res)=>{
       this.presentToast("Te has registrado exitosamente");
     }).catch(e=>{
       this.presentToast('agregar','Error: ' + JSON.stringify(e));

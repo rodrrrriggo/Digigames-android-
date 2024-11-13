@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular'; // Importa ToastController para mostrar notificaciones tipo toast
 import { ServiceBDService } from 'src/app/services/service-bd.service';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
@@ -11,19 +11,45 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 })
 export class AgregarjuegoPage implements OnInit {
 
-  nombre!: string 
+  nombre!: string;
   precio!: number;
   foto_producto: any;
 
-  constructor(private bd: ServiceBDService, private router: Router, private activerouter: ActivatedRoute) {}
+  constructor(
+    private bd: ServiceBDService,
+    private router: Router,
+    private toastController: ToastController // Añade ToastController aquí
+  ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  async crear() {
+    // Verificar que todos los campos estén llenos
+    if (!this.nombre || this.precio === null || this.precio === undefined || !this.foto_producto) {
+      this.presentToast('Todos los campos deben estar completos.');
+      return;
+    }
+
+    // Verificar que el precio no sea negativo
+    if (this.precio < 0) {
+      this.presentToast('El precio no puede ser negativo.');
+      return;
+    }
+
+    // Si todas las validaciones pasan, insertar el juego
+    this.bd.insertarJuego(this.nombre, this.precio, this.foto_producto);
+    this.router.navigate(['/vistaadmin']);
   }
 
-  crear (){
-    this.bd.insertarJuego(this.nombre, this.precio, this.foto_producto);
-    this.router.navigate(['/vistaadmin'],)
-  }  
+  // Método para mostrar Toast
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000, // Duración en milisegundos
+      position: 'middle', // Posición en la que aparecerá el toast
+    });
+    toast.present();
+  }
 
   takePicture = async () => {
     const image = await Camera.getPhoto({
@@ -32,13 +58,6 @@ export class AgregarjuegoPage implements OnInit {
       resultType: CameraResultType.Uri
     });
 
-    // image.webPath will contain a path that can be set as an image src.
-    // You can access the original file using image.path, which can be
-    // passed to the Filesystem API to read the raw data of the image,
-    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
     this.foto_producto = image.webPath;
-
-
   };
-
 }
