@@ -21,12 +21,12 @@ export class ServiceBDService {
 
   tablaEstado: string = "CREATE TABLE IF NOT EXISTS estado(id_estado INTEGER PRIMARY KEY NOT NULL, nombre_estado VARCHAR(50))";
 
-  tablaProductos: string = "CREATE TABLE IF NOT EXISTS productos(id_producto INTEGER PRIMARY KEY AUTOINCREMENT, foto_producto Blob, nombre_producto VARCHAR(50),precio INTEGER)";
+  tablaProductos: string = "CREATE TABLE IF NOT EXISTS productos(id_producto INTEGER PRIMARY KEY AUTOINCREMENT, foto_producto Blob, nombre_producto VARCHAR(50),precio INTEGER, stock INTEGER)";
 
 
   //TABLAS CON FOREIGN KEY
 
-  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL , correo VARCHAR(50) NOT NULL UNIQUE, telefono VARCHAR(50) NOT NULL, contrasena VARCHAR(50) NOT NULL, id_rol INTEGER, preguntaSeguridad VARCHAR(100), respuestaSeguridad VARCHAR(100), FOREIGN KEY (id_rol) REFERENCES rol(id_rol))";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL , correo VARCHAR(50) NOT NULL UNIQUE, telefono VARCHAR(50) NOT NULL, contrasena VARCHAR(50) NOT NULL, id_rol INTEGER, preguntaSeguridad VARCHAR(100), respuestaSeguridad VARCHAR(100), baneado BOOLEAN,  FOREIGN KEY (id_rol) REFERENCES rol(id_rol))";
 
   tablaVenta: string = "CREATE TABLE IF NOT EXISTS venta(id_venta INTEGER PRIMARY KEY AUTOINCREMENT, cantidad_venta INTEGER, total_venta INTEGER, usuarios_id_usuarios INTEGER, FOREIGN KEY(usuarios_id_usuarios) REFERENCES usuarios(id_usuario)), estado_id_estado INTEGER, FOREIGN KEY(estado_id_estado) REFERENCES estado(id_estado))";
 
@@ -39,7 +39,7 @@ export class ServiceBDService {
 
   registroRolU: string = "INSERT OR IGNORE INTO rol(id_rol, nombre_rol) VALUES (2, 'Usuario')";
   
-  registroJuego: string = "INSERT OR IGNORE INTO productos(id_producto, foto_producto, nombre_producto, precio) VALUES (1, '../assets/img/eafc.jpg', 'EAFC 25', 59990)";
+  registroJuego: string = "INSERT OR IGNORE INTO productos(id_producto, foto_producto, nombre_producto, precio, stock) VALUES (1, '../assets/img/eafc.jpg', 'EAFC 25', 59990, 20)";
 
 
   registroAdmin: string = "INSERT or IGNORE INTO usuarios(id_usuario, nombre, correo, telefono, contrasena, id_rol) VALUES (1, 'RodrigoAdminDG', 'rod.guzmang@digigames.cl', '12345678', 'Ola12345@', 1)";
@@ -138,7 +138,8 @@ export class ServiceBDService {
             id_producto: res.rows.item(i).id_producto,
             foto_producto: res.rows.item(i).foto_producto,
             nombre_producto: res.rows.item(i).nombre_producto,
-            precio: res.rows.item(i).precio
+            precio: res.rows.item(i).precio,
+            stock: res.rows.item(i).stock
           })
 
         }
@@ -237,14 +238,31 @@ export class ServiceBDService {
   }
 
 
-  insertarJuego(nombre_producto: string, precio: number, foto_producto: Blob){
-    return this.database.executeSql('INSERT INTO Productos(foto_producto, nombre_producto, precio) VALUES (?,?,?)',[foto_producto,nombre_producto,precio,]).then((res)=>{
-      this.presentToast("Juego agregado exitosamente al catalogo");
-      this.getJuego();
-    }).catch(e=>{
-      this.presentToast('Agregar','Error: ' + JSON.stringify(e));
-    })
+insertarJuego(nombre_producto: string, precio: number, foto_producto: Blob, stock: number) {
+  return this.database.executeSql(
+    'INSERT INTO productos(foto_producto, nombre_producto, precio, stock) VALUES (?,?,?,?)',
+    [foto_producto, nombre_producto, precio, stock]
+  ).then(() => {
+    this.presentToast("Juego agregado exitosamente al catálogo");
+    this.getJuego(); // Recargar los juegos después de insertar
+  }).catch(e => {
+    this.presentToast('Error al agregar juego: ' + JSON.stringify(e));
+  });
+}
+
+
+  actualizarStock(id_producto: number, nuevoStock: number): Promise<void> {
+    return this.database.executeSql(
+      'UPDATE productos SET stock = ? WHERE id_producto = ?',
+      [nuevoStock, id_producto]
+    ).then(() => {
+      console.log(`Stock actualizado para el producto ${id_producto} a ${nuevoStock}`);
+    }).catch(e => {
+      console.error('Error actualizando stock:', e);
+    });
   }
+  
+  
 
   eliminarProducto(id_producto : string){
     return this.database.executeSql('DELETE FROM productos WHERE id_producto = ?', [id_producto]).then((res)=>{
@@ -305,6 +323,28 @@ export class ServiceBDService {
       return null;
     });
   }
+
+// Método para banear un usuario
+banearUsuario(id_usuario: number) {
+  const query = `UPDATE usuarios SET baneado = 1 WHERE id_usuario = ?`;
+  return this.database.executeSql(query, [id_usuario]).then(res => {
+    return res;
+  }).catch(error => {
+    console.error('Error al banear al usuario', error);
+  });
+}
+
+
+// Método para desbanear un usuario
+desbanearUsuario(id_usuario: number) {
+  const query = `UPDATE usuarios SET baneado = 0 WHERE id_usuario = ?`;
+  return this.database.executeSql(query, [id_usuario]).then(res => {
+    return res;
+  }).catch(error => {
+    console.error('Error al desbanear al usuario', error);
+  });
+}
+
 
   async presentToast(mensaje: string, color: string = 'success') {
     const toast = await this.toastController.create({

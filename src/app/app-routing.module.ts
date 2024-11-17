@@ -80,9 +80,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/probarapi/probarapi.module').then( m => m.ProbarapiPageModule)
   },
   {
+    path: 'historial',
+    loadChildren: () => import('./pages/historial/historial.module').then( m => m.HistorialPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/notfound/notfound.module').then( m => m.NotfoundPageModule)
   },
+  
 
 
   

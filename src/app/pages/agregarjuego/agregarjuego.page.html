@@ -28,6 +28,15 @@
       <br />
       <ion-input type="number" label="Precio" label-placement="floating" fill="outline" placeholder="Precio del juego" [(ngModel)]="precio" ></ion-input>
       <br />
+      <ion-input 
+  type="number" 
+  label="Stock inicial" 
+  label-placement="floating" 
+  fill="outline" 
+  placeholder="Cantidad en stock" 
+  [(ngModel)]="stock">
+</ion-input>
+      <br />
       <ion-button (click)="crear()">REGISTRAR</ion-button>
       <br />
     </ion-card>

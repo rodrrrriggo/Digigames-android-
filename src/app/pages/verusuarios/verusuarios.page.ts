@@ -8,12 +8,16 @@ import { ServiceBDService } from 'src/app/services/service-bd.service';
 })
 export class VerusuariosPage implements OnInit {
 
+  rolUsuario: string | null = null;
+
   usuarios: any[] = [];
 
   constructor(private bd: ServiceBDService) { }
 
   ngOnInit() {
     this.cargarUsuarios();
+
+    this.rolUsuario = localStorage.getItem('id_rol');
   }
 
   cargarUsuarios() {
@@ -21,6 +25,24 @@ export class VerusuariosPage implements OnInit {
       this.usuarios = usuarios;
     }).catch(error => {
       console.error('Error al cargar usuarios', error);
+    });
+  }
+
+  // Método para banear a un usuario
+  banearUsuario(id_usuario: number) {
+    this.bd.banearUsuario(id_usuario).then(() => {
+      this.cargarUsuarios(); // Recargar la lista de usuarios
+    }).catch(error => {
+      console.error('Error al banear al usuario', error);
+    });
+  }
+
+  // Método para desbanear a un usuario
+  desbanearUsuario(id_usuario: number) {
+    this.bd.desbanearUsuario(id_usuario).then(() => {
+      this.cargarUsuarios(); // Recargar la lista de usuarios
+    }).catch(error => {
+      console.error('Error al desbanear al usuario', error);
     });
   }
 }

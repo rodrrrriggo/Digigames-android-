@@ -35,9 +35,26 @@
         <ion-label>
           <h2> Nombre del usuario: {{ usuario.nombre }}</h2>
           <p> Correo del usuario: {{ usuario.correo }}</p>
-          <p> Telefono del usuario: {{ usuario.telefono }}</p>
+          <p> Teléfono del usuario: {{ usuario.telefono }}</p>
+          <p> Estado: {{ usuario.baneado === 1 ? 'Baneado' : 'Activo' }}</p>
         </ion-label>
+      
+        <!-- Botones visibles solo para administradores -->
+        <ion-button 
+          *ngIf="rolUsuario === '1' && usuario.baneado === 0" 
+          color="danger" 
+          (click)="banearUsuario(usuario.id_usuario)">
+          Banear
+        </ion-button>
+        <ion-button 
+          *ngIf="rolUsuario === '1' && usuario.baneado === 1" 
+          color="success" 
+          (click)="desbanearUsuario(usuario.id_usuario)">
+          Desbanear
+        </ion-button>
       </ion-item>
+      
+
     </ion-list>
   </ion-card>
 

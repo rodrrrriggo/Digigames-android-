@@ -14,6 +14,7 @@ export class AgregarjuegoPage implements OnInit {
   nombre!: string;
   precio!: number;
   foto_producto: any;
+  stock!: number;
 
   constructor(
     private bd: ServiceBDService,
@@ -25,7 +26,7 @@ export class AgregarjuegoPage implements OnInit {
 
   async crear() {
     // Verificar que todos los campos estén llenos
-    if (!this.nombre || this.precio === null || this.precio === undefined || !this.foto_producto) {
+    if (!this.nombre || this.precio === null || this.precio === undefined || !this.foto_producto || this.stock === null || this.stock === undefined) {
       this.presentToast('Todos los campos deben estar completos.');
       return;
     }
@@ -37,7 +38,7 @@ export class AgregarjuegoPage implements OnInit {
     }
 
     // Si todas las validaciones pasan, insertar el juego
-    this.bd.insertarJuego(this.nombre, this.precio, this.foto_producto);
+    this.bd.insertarJuego(this.nombre, this.precio, this.foto_producto, this.stock);
     this.router.navigate(['/vistaadmin']);
   }
 
