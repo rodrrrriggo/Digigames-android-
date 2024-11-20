@@ -12,15 +12,28 @@ describe('ModifdatosPage', () => {
       declarations: [ModifdatosPage],
       providers: [
         ServiceBDService,
-        { provide: SQLite}, // Usa el mock
+        { provide: SQLite }, // Usa el mock
       ],
     }).compileComponents();
-
-    const fixture = TestBed.createComponent(ModifdatosPage);
+  
+    fixture = TestBed.createComponent(ModifdatosPage);
     component = fixture.componentInstance;
+  
+    //Este componente se inicializa en ngOnInit, entonces yo le pase el parametro para aca para
+    //que se pueda simular/inicializar correctamente
+    component.ngOnInit();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+
+  it('El campo nombre no puede contener caracteres especiales, de lo contrario no se puede modificar', () => {
+    // Establecer un valor no válido para el campo 'nombre'
+    component.editUserForm.controls['nombre'].setValue('Rodrigo34@._');
+  
+    expect(component.editUserForm.controls['nombre'].valid).toBeFalse();
+   
+    expect(component.editUserForm.controls['nombre'].errors?.['pattern']).toBeTruthy();
+
+    const errorMessage = component.getNombreError();
+    expect(errorMessage).toBe('El campo "Nombre" no puede contener numeros ni caracteres especiales.');
   });
 });

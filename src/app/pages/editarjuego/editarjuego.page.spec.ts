@@ -28,7 +28,7 @@ describe('EditarjuegoPage', () => {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
-              paramMap: { get: (key: string) => '1' }  // Simula paramMap.get('id')
+              paramMap: { get: (key: string) => '1' } 
             },
             params: of({ id: '1' }), 
             queryParams: of({}),  
@@ -46,7 +46,14 @@ describe('EditarjuegoPage', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('debería validar que el formulario es válido cuando todos los campos están completos y correctos', () => {
+    // Asignar valores válidos
+    component.JuegoMod = {
+      foto_producto: 'GRANDTHEFTAUTOVI.png',
+      nombre_producto: 'GRAND THEFT AUTO 6',
+      precio: 50,
+    };
+  
+    expect(component.isFormValid()).toBeTrue();
   });
 });
